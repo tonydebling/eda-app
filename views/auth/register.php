@@ -2,7 +2,14 @@
 
 {% block title %}Register{% endblock %}
 {% block content %}
+	<div>
+	<h1>{{ name }}</h1>
+	URN: {{ school_id }} <br>
+	<a href="{{ urlFor('register') }}">Click if this is not your school?</a>
+	<hr>
+	</div>
 	<form action="{{ urlFor('register.post')}}" method="post" autocomplete="off">
+
 		<div>
 			<label for"email">Email</label>
 			<input type="text" name="email" id="email" {% if request.post('email') %} value={{ request.post('email') }}{% endif %}>
@@ -27,6 +34,8 @@
 			<input type="submit" value="Register" >
 		</div>
 		<input type="hidden" name="{{ csrf_key }}" value="{{ csrf_token }}">
+		<input type="hidden" name="school_id" value="{{ school_id }}">
+		<input type="hidden" name="name" value="{{ name }}">
 	</form>
 {% endblock %}
 	
