@@ -12,6 +12,12 @@ class User extends Eloquent{
 		'email',
 		'username',
 		'password',
+		'first_name',
+		'last_name',
+		'date_of_birth',
+		'school_id',
+		'is_student',
+		'student_id',
 		'active',
 		'active_hash',
 		'recover_hash',
@@ -46,9 +52,13 @@ class User extends Eloquent{
 	
 	public function isAdmin()
 	{
-		return $this->hasPermission('is_admin');
+		return $this->is_admin;
 	}
-			
+	
+	public function isStudent()
+	{
+		return $this->is_student;
+	}			
 	public function permissions()
 	{
 		return $this->hasOne('Target\User\UserPermission', 'user_id');

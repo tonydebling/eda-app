@@ -10,6 +10,7 @@ use Noodlehaus\Config;
 use RandomLib\Factory as RandomLib;
 
 use Target\User\User;
+use Target\Database\School;
 use Target\Database\Student;
 use Target\Database\Set;
 use Target\Database\Studentset;
@@ -49,6 +50,10 @@ $app->auth = false;
 
 $app->container->set('user', function() {
 	return new User;
+});
+
+$app->container->set('school', function() {
+	return new School;
 });
 
 $app->container->set('student', function() {
