@@ -10,19 +10,27 @@ $app->post('/uploadfile', function() use($app) {
 
 	$request = $app->request;
 	$fileType = $request->post('fileType');
-
+	$user = $app->user->where('id',$_SESSION[$app->config->get('auth.session')])->first();
+	
 	if ($fileType == "students") {
 		$fullFileName = $_FILES["fileToUpload"]["tmp_name"];
 		$table = csv_to_array($fullFileName);
-		$columns = array_keys($table[0]);		
+
+		foreach ($table as $key => $csm){
+			$table[$key]['school_id'] = $user->school_id;
+		}
+
 		$deletedrows = $app->student->truncate();
 		$student = $app->student->insert($table);
+
 		$heading = "Student table updated";
+		$columns = array_keys($table[0]);
 		$app->render('admin/displayfile.php', [
 			'heading' => $heading,
 			'columns' => $columns,
 			'table' => $table
 		]);
+
 	};
 
 	if ($fileType == "sets") {

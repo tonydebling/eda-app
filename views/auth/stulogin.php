@@ -4,7 +4,7 @@
 {% block content %}
 	<div>
 	<h1>{{ name }}</h1>
-	URN: {{ urn }} <br>
+	URN: {{ school_id }} <br>
 	<a href="{{ urlFor('stulogin') }}">Click if this is not your school?</a>
 	<hr>
 	</div>
@@ -30,6 +30,7 @@
 		<hr>
 		<a href="{{ urlFor('login') }}">Click here if you are not a student?</a>
 		<input type="hidden" name="{{ csrf_key }}" value="{{ csrf_token }}">
-		<input type="hidden" name="urn" value="{{ urn }}">
+		<input type="hidden" name="school_id" value="{{ school_id }}">
+		<input type="hidden" name="name" value="{{ name }}">
 		</form>
 {% endblock %}

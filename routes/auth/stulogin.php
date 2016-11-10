@@ -1,11 +1,19 @@
 <?php
 
-$app->get('/stulogin(/:urn)', $guest(), function($urn = 0) use($app) {
-	if ($urn == 0){
+$app->get('/stulogin(/:school_id)', $guest(), function($school_id = 0) use($app) {
+	if ($school_id == 0){
 		$app->render('auth/stufindschool.php');
 	} else {
-		echo "Yay, we got to the next part";
-		echo $urn;
+		$school = $app->school->where('id',$school_id)->first();
+		if ($school){
+			$app->render('auth/stulogin.php', [
+				'school_id' => $school->id,
+				'name' => $school->name,
+				'errors' => [],
+				]);
+		} else {
+			$app->render('auth/stufindschool.php');
+		};
 		die();
 	}
 })->name('stulogin');
@@ -14,18 +22,18 @@ $app->post('/stufindschool', $guest(), function() use($app) {
 	
 	$request = $app->request;
 	$postcode = $request->post('postcode');
-	
-/*	Convert the postcode to the URN
-*/
-	$urn = 100000;
-	$name = "Wellsmart Academy";
 
-	$app->render('auth/stulogin.php', [
-		'urn' => $urn,
-		'name' => $name,
-		'errors' => [],
-		'request' => $request,
-		]);
+	$school = $app->school
+		->where('postcode', $postcode)
+		->first();
+	
+	if ($school){
+		$app->redirect($app->urlFor('stulogin').'/'.$school->id);
+		
+	} else {
+		$app->render('auth/stufindschool.php');
+	};
+
 	die();
 	
 })->name('stufindschool.post');
@@ -33,42 +41,51 @@ $app->post('/stufindschool', $guest(), function() use($app) {
 $app->post('/stulogin', $guest(), function() use($app) {
 	
 	$request = $app->request;
-	$urn = $request->post('urn');	
+	$school_id = $request->post('school_id');
+	$name = $request->post('name');
 	$first_name = $request->post('first_name');
 	$last_name = $request->post('last_name');	
 	$date_of_birth = $request->post('date_of_birth');
 
-
 	$v = $app->validation;
 	
 	$v->validate([
-		'urn' => [$urn, 'required'],
+		'school_id' => [$school_id, 'required'],
 		'first_name' => [$first_name, 'required'],
 		'last_name' => [$last_name, 'required'],
 		'date_of_birth' => [$date_of_birth, 'required'],
 	]);
-	echo "Student login validation completed";
-	die();
-/*
+	
 	if ($v->passes()){
-		$user = $app->user
-			->where('username', $identifier)
-			->orWhere('email', $identifier)
+		$student = $app->student
+			->where('first_name', $first_name)
+			->where('last_name', $last_name)
+			->where('school_id', $school_id)
 			->first();
 			
-		if ($user && $app->hash->passwordCheck($password, $user->password)){
-			$_SESSION[$app->config->get('auth.session')] = $user->id;
-			$app->flash('global','You are now signed in');
-			$app->response->redirect($app->urlFor('home'));
-		} else {
-			$app->flash('global','Could not log you in!');
-			$app->response->redirect($app->urlFor('login'));
-		}	
+		/* CHECK STUDENT FOUND ... */
+			
+		$user = $app->user->firstOrNew(['student_id' => $student->id]);
+		$user->student_id = $student->id;
+		$user->school_id = $school_id;
+		$user->first_name = $first_name;
+		$user->last_name = $last_name;
+		$user->is_student = true;
+		$user->active = true;
+		$user->save();
+
+		$_SESSION[$app->config->get('auth.session')] = $user->id;
+		echo 'about call redirect';
+		$app->flash('global','You are now signed in');
+		$app->redirect($app->urlFor('home'));
+		die();	
 	}
 	
-	$app->render('auth/login.php', [
+	$app->render('auth/stulogin.php', [
+		'school_id' => $school_id,
+		'name' => $name,
 		'errors' => $v->errors(),
 		'request' => $request,
 	]);	
-*/
+
 })->name('stulogin.post');

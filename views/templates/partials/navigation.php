@@ -1,9 +1,7 @@
 {% if auth %}
 	Hello,	{{ auth.getFullNameOrUsername() }}
 {% endif %}
-{% if auth.isAdmin() %}
-	(Administrator)
-{% endif %}
+
 
 <ul class="w3-navbar w3-teal">
 	<li><a href="{{ urlFor('home') }}">Home</a></li>
@@ -18,9 +16,9 @@
 			<li><a href="{{ urlFor('uploadfile') }}">Upload file</a></li>
 		{% endif %}
 	{% else %}
-
-		<li><a href="{{ urlFor('register') }}">Register</a></li>
-		<li><a href="{{ urlFor('login') }}">Login</a></li>
+		<li><a href="{{ urlFor('stulogin') }}">Student Login</a></li>
+		<li><a href="{{ urlFor('login') }}">Staff Login</a></li>
+		<li><a href="{{ urlFor('register') }}">Staff Register</a></li>
 	{% endif %}
 
 </ul>

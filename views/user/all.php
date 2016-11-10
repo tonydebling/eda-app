@@ -11,10 +11,10 @@
 			<div class="user">
 				<a href="{{ urlFor('user.profile', {username: user.username}) }}">
 				{% if user.getFullName() %}
-				 ({{ user.getFullName() }})
+				 {{ user.getFullName() }}
 				{% endif %}
-				{% if user.isAdmin() %}
-					(Admin)
+				{% if user.is_student %}
+					(Student)
 				{% endif %}
 			</div>
 		{% endfor %}
