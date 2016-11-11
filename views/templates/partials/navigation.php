@@ -4,9 +4,10 @@
 
 
 <ul class="w3-navbar w3-teal">
-	<li><a href="{{ urlFor('home') }}">Home</a></li>
+	
 	
 	{% if auth %}
+		<li><a href="{{ urlFor('user.home', {user_id: auth.id}) }}">Home</a></li>
 		<li><a href="{{ urlFor('logout') }}">Logout</a></li>
 		<li><a href="{{ urlFor('user.profile', {user_id: auth.id}) }}">Your profile</a></li>
 		{% if auth.isStudent() == false %}
@@ -18,6 +19,7 @@
 			<li><a href="{{ urlFor('uploadfile') }}">Upload file</a></li>
 		{% endif %}
 	{% else %}
+		<li><a href="{{ urlFor('home') }}">Home</a></li>
 		<li><a href="{{ urlFor('stulogin') }}">Student Login</a></li>
 		<li><a href="{{ urlFor('login') }}">Staff Login</a></li>
 		<li><a href="{{ urlFor('register') }}">Staff Register</a></li>
