@@ -8,8 +8,10 @@
 	
 	{% if auth %}
 		<li><a href="{{ urlFor('logout') }}">Logout</a></li>
-		<li><a href="{{ urlFor('user.profile', {username: auth.username}) }}">Your profile</a></li>
-		<li><a href="{{ urlFor('changepassword') }}">Change password</a></li>
+		<li><a href="{{ urlFor('user.profile', {user_id: auth.id}) }}">Your profile</a></li>
+		{% if auth.isStudent() == false %}
+			<li><a href="{{ urlFor('changepassword') }}">Change password</a></li>
+		{% endif %}
 		{% if auth.isAdmin() %}
 			<li><a href="{{ urlFor('admin.x') }}">Admin area</a></li>
 			<li><a href="{{ urlFor('user.all') }}">All users</a></li>

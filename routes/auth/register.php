@@ -75,13 +75,13 @@ $app->post('/register', $guest(), function() use($app) {
 		]);
 		
 		$user->permissions()->create(UserPermission::$defaults);
-/*
+
 		$result = $app->mail->send(
 			$user->email,
 			'Thanks for registering.',
 			'email/auth/registered.php', ['user' => $user, 'identifier' => $identifier]
 			);
-*/			
+			
 		$app->flash('global', 'You have been sent a registration email.');
 		
 		$app->response->redirect($app->urlFor('home'));

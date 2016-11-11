@@ -11,6 +11,7 @@ require INC_ROOT . '/app/routes/auth/recoverpassword.php';
 require INC_ROOT . '/app/routes/auth/resetpassword.php';
 
 require INC_ROOT . '/app/routes/user/profile.php';
+require INC_ROOT . '/app/routes/user/home.php';
 require INC_ROOT . '/app/routes/user/all.php';
 
 require INC_ROOT . '/app/routes/admin/example.php';

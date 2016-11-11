@@ -71,14 +71,15 @@ $app->post('/stulogin', $guest(), function() use($app) {
 			$user->school_id = $school_id;
 			$user->first_name = $first_name;
 			$user->last_name = $last_name;
+			$user->email = $student->email;
 			$user->is_student = true;
 			$user->active = true;
 			$user->save();
 
 			$_SESSION[$app->config->get('auth.session')] = $user->id;
-			echo 'about call redirect';
+
 			$app->flash('global','You are now signed in');
-			$app->redirect($app->urlFor('home'));
+			$app->redirect($app->urlFor('user.home', ['user_id' =>$user->id]));
 		};	
 	}
 	
