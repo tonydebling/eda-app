@@ -1,6 +1,6 @@
 <?php
 
-$app->get('/u/:user_id', function($user_id) use($app) {
+$app->get('/h/:user_id', function($user_id) use($app) {
 	
 	$user = $app->user->where('id', $user_id)->first();
 	
@@ -8,7 +8,8 @@ $app->get('/u/:user_id', function($user_id) use($app) {
 		$app->notFound();
 	}
 
-	$app->render('/user/profile.php', [
+	$app->render('/user/home.php', [
 		'user' => $user,
 	]);
-})->name('user.profile');
+	
+})->name('user.home');

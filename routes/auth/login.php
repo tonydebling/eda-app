@@ -27,7 +27,7 @@ $app->post('/login', $guest(), function() use($app) {
 		if ($user && $app->hash->passwordCheck($password, $user->password)){
 			$_SESSION[$app->config->get('auth.session')] = $user->id;
 			$app->flash('global','You are now signed in');
-			$app->response->redirect($app->urlFor('home'));
+			$app->redirect($app->urlFor('user.home', ['user_id' => $user->id]));
 		} else {
 			$app->flash('global','Could not log you in!');
 			$app->response->redirect($app->urlFor('login'));
