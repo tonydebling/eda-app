@@ -15,6 +15,7 @@ class Student_Classe extends Eloquent{
 		'school_student_id',
 		'classe_id',
 		'school_classe_id',
+		'checklist_id',
 		'number',
 		];
 	

@@ -21,7 +21,13 @@ class Student extends Eloquent{
 		'upn',
 		'registered',
 		];
-	
+		
+	public function classes()
+	{
+			return $this->belongsToMany('Target\Database\Classe', 'student_classe')
+				-> withPivot('checklist_id', 'number');
+	}
+
 	public function getFullName()
 	{
 		if (!$this->first_name || !$this->last_name){
