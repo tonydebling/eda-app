@@ -13,7 +13,7 @@
 		</div>
 		<div>
             <p>
-			<label>Select image to upload:</label>
+			<label>Select file to upload:</label>
 			<input type="file" name="fileToUpload" id="fileToUpload">
 			</p>
 		</div>

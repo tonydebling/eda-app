@@ -15,5 +15,11 @@ class Classe extends Eloquent{
 		'course',
 		'subject',
 		];
+		
+	public function students()
+	{
+			return $this->belongsToMany('Target\Database\Student', 'student_classe')
+				-> withPivot('checklist_id', 'number');
+	}
 
 }

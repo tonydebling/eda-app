@@ -7,9 +7,18 @@ $app->get('/h/:user_id', function($user_id) use($app) {
 	if (!$user) {
 		$app->notFound();
 	}
-
-	$app->render('/user/home.php', [
-		'user' => $user,
-	]);
+	if ($user->isStudent()) {
+		$student = $app->student->where('id',$user->student_id)->first();
+		$classes = $student->classes;
+		$app->render('/user/stuhome.php', [
+			'user' => $user,
+			'student' => $student,
+			'classes' => $classes,
+		]);
+	} else {
+		$app->render('/user/home.php', [
+			'user' => $user,	
+		]);
+	}
 	
 })->name('user.home');
