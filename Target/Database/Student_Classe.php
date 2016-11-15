@@ -4,16 +4,17 @@ namespace Target\Database;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
-class Studentset extends Eloquent{
+class Student_Classe extends Eloquent{
 	
 	protected $primarykey = null;
 	public $incrementing = false;
-
-	protected $table = 'studentsets';
+	protected $table = 'student_classe';
 
 	protected $fillable = [
-		'school_id',
-		'class',
+		'student_id',
+		'school_student_id',
+		'classe_id',
+		'school_classe_id',
 		'number',
 		];
 	
