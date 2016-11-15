@@ -12,8 +12,8 @@ use RandomLib\Factory as RandomLib;
 use Target\User\User;
 use Target\Database\School;
 use Target\Database\Student;
-use Target\Database\Set;
-use Target\Database\Studentset;
+use Target\Database\Classe;
+use Target\Database\Student_Classe;
 use Target\Helpers\Hash;
 use Target\Mail\Mailer;
 use Target\Validation\Validator;
@@ -60,12 +60,12 @@ $app->container->set('student', function() {
 	return new Student;
 });
 
-$app->container->set('set', function() {
-	return new Set;
+$app->container->set('classe', function() {
+	return new Classe;
 });
 
-$app->container->set('studentset', function() {
-	return new Studentset;
+$app->container->set('student_classe', function() {
+	return new Student_Classe;
 });
 
 $app->container->singleton('hash', function() use($app){
