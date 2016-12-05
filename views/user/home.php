@@ -10,7 +10,7 @@
 		<dd>{{ user.getFullName() }}</dd>
 	{% endif %}
 	<dt>Email</dt>
-	<dd>{{ user.email }}</dd
+	<dd>{{ user.email }}</dd>
 	</dl>	
 	
 {% endblock %}

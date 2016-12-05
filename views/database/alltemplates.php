@@ -16,7 +16,15 @@
 		{% for row in table %}
 		<tr>
 			{% for column in columns %}
-			<td>{{row[column]}}</td>
+				{% if column == 'paper'%}
+					<td>
+					<a href="{{ urlFor('template', {template_id: row['id']}) }}">
+					{{row[column]}}
+					</td>
+				{% else %}
+					<td>{{row[column]}}</td>
+				{% endif %}
+			
 			{% endfor %}
 		</tr>
 		{% endfor %}

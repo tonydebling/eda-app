@@ -6,7 +6,8 @@
 		<div>
 			<label for"fileType">File type</label>
 			<select name="fileType">
-				<option value="schools">Schools</option>	
+				<option value="schools">Schools</option>
+				<option value="template">Template</option>
 			</select>
 		</div>
 		<div>

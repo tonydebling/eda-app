@@ -14,6 +14,8 @@ require INC_ROOT . '/app/routes/user/profile.php';
 require INC_ROOT . '/app/routes/user/home.php';
 require INC_ROOT . '/app/routes/user/all.php';
 
+require INC_ROOT . '/app/routes/database/template.php';
+
 require INC_ROOT . '/app/routes/admin/example.php';
 require INC_ROOT . '/app/routes/admin/uploadfile.php';
 require INC_ROOT . '/app/routes/admin/eda-upload.php';

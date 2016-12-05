@@ -17,7 +17,17 @@ class School extends Eloquent{
 		'domain',
 		'registered',
 		];
-	
+
+	public function students()
+	{
+			return $this->hasMany('Target\Database\Student');
+	}
+
+	public function classes()
+	{
+			return $this->hasMany('Target\Database\Classe');
+	}
+		
 	public function setAsRegistered()
 	{
 		$this->update([

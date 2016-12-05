@@ -16,6 +16,11 @@ class Classe extends Eloquent{
 		'subject',
 		];
 		
+	public function school()
+	{
+			return $this->belongsTo('Target\Database\School');
+	}
+	
 	public function students()
 	{
 			return $this->belongsToMany('Target\Database\Student', 'student_classe')

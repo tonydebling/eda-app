@@ -24,5 +24,6 @@
 		<li><a href="{{ urlFor('login') }}">Staff Login</a></li>
 		<li><a href="{{ urlFor('register') }}">Staff Register</a></li>
 	{% endif %}
+	<li><a href="{{ urlFor('template') }}">Templates</a></li>
 
 </ul>
