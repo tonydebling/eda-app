@@ -18,7 +18,11 @@
 			{% for row in block.table %}
 			<tr>
 				{% for column in block.columns %}
-				<td>{{row[column]}}</td>
+					{% if '<' in row[column] %}
+						{{row[column]|raw}}
+					{% else %}
+						<td>{{row[column]|raw}}</td>
+					{% endif %}
 				{% endfor %}
 			</tr>
 			{% endfor %}

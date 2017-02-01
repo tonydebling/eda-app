@@ -4,7 +4,6 @@ use Target\Database\Template;
 
 $app->get('/template(/:template_id)', function($template_id = 0) use($app) {
 	
-	echo 'Got here ok';
 	// First section displays list of templates if id is not given
 	if ($template_id == 0){
 		$templates = new Template;
@@ -18,15 +17,16 @@ $app->get('/template(/:template_id)', function($template_id = 0) use($app) {
 			$table[$key]['subject'] = $template->subject;
 			$table[$key]['year'] = $template->year;
 			$table[$key]['month'] = $template->month;
-			$table[$key]['paper'] = $template->paper;
+			$table[$key]['paper'] = '<td><a href='.$app->urlFor('template').'/'.$template->id.'>'.$template->paper.'</td>';
 			$key += 1;
 		}
 		$columns = array_keys($table[0]);
-		$app->render('database/alltemplates.php', [
+		$app->render('admin/displayfile.php', [
 			'heading' => 'Template Listing',
 			'columns' => $columns,
 			'table' => $table,	
 		]);
+
 	// This section displays template when id is specified	
 	} else {	
 		$template = new Template;

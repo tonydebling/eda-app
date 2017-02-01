@@ -1,23 +1,34 @@
 <?php
 
-use Mailgun\Mailgun;
+use Target\Database\Student;
+use Target\Database\Schoolsubject;
+use Target\Database\Classe;
+use Target\Database\Student_Classe;
+use Target\Database\Testpoint;
+use Target\Database\Template;
 
 $app->get('/sandbox', function() use($app) {
+/*	This increnents the school year of every student! Fix for test data.
+	$user = $app->user->where('id',$_SESSION[$app->config->get('auth.session')])->first();
 
-	# Instantiate the client.
-	$mgClient = new Mailgun('key-58e14f14956e8761e6b320f0c063fb16');
-	$domain = "https://api.mailgun.net/v3/msg.edanalytics.co.uk";
-	# Make the call to the client.
-	$result = $mgClient->sendMessage("$domain",
-					  array('from'    => 'noreply@msg.edanalytics.co.uk',
-							'to'      => 'gladysdebling@gmail.com',
-							'subject' => 'Hello Tony Debling',
-							'text'    => 'Here is a different text to send with no reply sender.'));
-	if ($result){
-		$app->flash('global','Email sent!');
-	} else {
-		$app->flash('global','Email failed :( !');
-	}
-	$app->response->redirect($app->urlFor('home'));
-
+	$student = new Student;
+	$students = $student
+		->where('school_id', $user->school_id)
+		->get();
+	foreach($students as $stu){
+		$ny = $stu->year_group + 1;
+		$stu -> update(['year_group'=> $ny]);
+	};
+	$students = $student
+		->where('school_id', $user->school_id)
+		->get();	
+	
+	$table = $students->toArray();
+	$columns = array_keys($table[0]);
+	$app->render('admin/displayfile.php', [
+		'heading' => 'Updated students',
+		'columns' => $columns,
+		'table' => $table
+	]);
+*/
 	})->name('sandbox');

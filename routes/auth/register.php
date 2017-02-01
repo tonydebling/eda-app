@@ -34,7 +34,12 @@ $app->post('/findschool', $guest(), function() use($app) {
 		$app->redirect($app->urlFor('register').'/'.$school->id);
 		
 	} else {
-		$app->render('auth/findschool.php');
+		$base = $app->config->get('app.url');
+		$url = $base.$app->urlFor('getdata.schools');
+		var_dump($url);
+		$app->render('auth/findschool.php',[
+			'url' => $url,
+		]);
 	};
 	
 	die();

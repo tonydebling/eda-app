@@ -4,19 +4,21 @@ namespace Target\Database;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
-class Checkpoint extends Eloquent{
+class Schoolsubject extends Eloquent{
 
 	protected $fillable = [
+		'school_id',
 		'name',
 		'tricode',
-		'school_id',
-		'date',
-		'year_group',
-		'week_number',
 		];
 
     public $timestamps = false;
-		
+
+	public function classes()
+	{
+			return $this->hasMany('Target\Database\Classe');
+	}
+	
 	public function testpoints()
 	{
 			return $this->hasMany('Target\Database\Testpoint');

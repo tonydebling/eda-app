@@ -1,27 +1,23 @@
 {% extends 'templates/default.php' %}
 
-{% block title %}Display Table{% endblock %}
+{% block title %}Display Collection{% endblock %}
 {% block content %}
 	<div class="w3-responsive">
 	<h1>{{heading}}</h1>
 	<table class="w3-table-all">
 		<thead>
 		<tr>
-		{% for column in columns %}
+		{% for column in collection.toArray() %}
 			<th>{{ column }}</th>
 		{% endfor %}
 		</tr>
 		</thead>
 		<tbody>
-		{% for row in table %}
+		{% for row in collection.all() %}
 		<tr>
-				{% for column in columns %}
-					{% if '<' in row[column] %}
-						{{row[column]|raw}}
-					{% else %}
-						<td>{{row[column]|raw}}</td>
-					{% endif %}
-				{% endfor %}
+			{% for column in collection.keys() %}
+			<td>{{row[column]}}</td>
+			{% endfor %}
 		</tr>
 		{% endfor %}
 		</tbody>
@@ -29,4 +25,3 @@
 	</div>
 
 {% endblock %}
-	

@@ -11,6 +11,7 @@ use RandomLib\Factory as RandomLib;
 
 use Target\User\User;
 use Target\Database\School;
+use Target\Database\Schoolsubject;
 use Target\Database\Student;
 use Target\Database\Classe;
 use Target\Database\Student_Classe;
@@ -54,6 +55,10 @@ $app->container->set('user', function() {
 
 $app->container->set('school', function() {
 	return new School;
+});
+
+$app->container->set('subject', function() {
+	return new Schoolsubject;
 });
 
 $app->container->set('student', function() {

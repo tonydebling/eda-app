@@ -22,7 +22,12 @@ class School extends Eloquent{
 	{
 			return $this->hasMany('Target\Database\Student');
 	}
-
+		
+	public function schoolsubjects()
+	{
+			return $this->hasMany('Target\Database\Schoolsubject');
+	}
+	
 	public function classes()
 	{
 			return $this->hasMany('Target\Database\Classe');

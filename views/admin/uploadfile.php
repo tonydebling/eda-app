@@ -7,14 +7,22 @@
 			<label for"fileType">File type</label>
 			<select name="fileType">
 				<option value="students">Students</option>
+				<option value="subjects">Subjects</option>
 				<option value="classes">Classes</option>
-				<option value="student_classes">Student Classes</option>		
+				<option value="student_classes">Student Classes</option>
+				<option value="checkpoints">Checkpoints</option>
+				<option value="testpoints">Testpoints</option>
+				<option value="testresults">Testresults</option>
 			</select>
 		</div>
 		<div>
             <p>
 			<label>Select file to upload:</label>
 			<input type="file" name="fileToUpload" id="fileToUpload">
+			</p>
+            <p>
+			<label>Testpoint identifier:</label>
+			<input type="number" name="testpoint_id" id="testpoint_id">
 			</p>
 		</div>
 		<div>

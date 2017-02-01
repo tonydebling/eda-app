@@ -10,6 +10,9 @@ class Testresult extends Eloquent{
 		'testpoint_id',
 		'student_id',
 		'grade',
+		'ums',
+		'total',
+		'marks',
 		];
 	
 	public function testpoint()
@@ -20,11 +23,6 @@ class Testresult extends Eloquent{
 	public function student()
 	{
 			return $this->belongsTo('Target\Database\Student');
-	}
-		
-	public function testmarks()
-	{
-			return $this->hasMany('Target\Database\Testmark');
 	}
 
 }
