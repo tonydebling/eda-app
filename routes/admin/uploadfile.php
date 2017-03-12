@@ -23,15 +23,21 @@ $app->post('/uploadfile', function() use($app) {
 		foreach ($table as $key => $csm){
 			$table[$key]['school_id'] = $user->school_id;
 		}
-
-		$deletedrows = $app->student
-			->where('school_id', $user->school_id)
-			->delete();
 		
-		$student = $app->student->insert($table);
-
-		$heading = "Student table updated";
+		// Check that table contains correct columns
 		$columns = array_keys($table[0]);
+		$match = array_diff(['school_student_id','first_name'], $columns);
+		if ($match == []) {
+			// Replace student records in database
+			$deletedrows = $app->student
+				->where('school_id', $user->school_id)
+				->delete();		
+			$student = $app->student->insert($table);
+			$heading = 'Student data updated';
+		} else {
+			$heading = 'Database not updated, table has incorrect headings';
+		};
+
 		$app->render('admin/displayfile.php', [
 			'heading' => $heading,
 			'columns' => $columns,
@@ -50,8 +56,7 @@ $app->post('/uploadfile', function() use($app) {
 		$deletedrows = $app->subject
 			->where('school_id', $user->school_id)
 			->delete();
-		
-		$student = $app->subject->insert($table);
+		$subject = $app->subject->insert($table);
 
 		$heading = "Subject table updated";
 		$columns = array_keys($table[0]);
@@ -141,10 +146,7 @@ $app->post('/uploadfile', function() use($app) {
 		$deletedrows = $app->student_classe
 			->where('school_id', $user->school_id)
 			->delete();
-/*		
-		var_dump($table);
-		die();
-*/		
+		
 		$student = $app->student_classe->insert($table);
 
 		$columns = array_keys($table[0]);

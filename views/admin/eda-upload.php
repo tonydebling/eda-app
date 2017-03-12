@@ -8,6 +8,7 @@
 			<select name="fileType">
 				<option value="schools">Schools</option>
 				<option value="template">Template</option>
+				<option value="checklist">Checklist</option>
 			</select>
 		</div>
 		<div>

@@ -161,4 +161,46 @@ $app->post('/eda-upload', function() use($app) {
 		die();
 	};
 	
+	if ($fileType == "checklist") {
+		$fullFileName = $_FILES["fileToUpload"]["tmp_name"];
+		$xml = simplexml_load_file($fullFileName);
+
+
+		$unitKey = 0;
+		$unitList = [];
+		foreach ($xml->units->children() as $unit){
+			$topicKey = 0;
+			$topicList = [];
+			foreach ($unit->topics->topic as $topic){
+				$checkKey = 0;
+				$checkList = [];
+				foreach ($topic->checks->check as $check){
+					$checkList[$checkKey] = [
+						'text' => $check->text,
+						'rank' => $check->rank,
+					];
+					$checkKey +=1;
+				}
+				$topicList[$topicKey] = [
+					'name' => $topic->name,
+					'checks' => $checkList,
+					'number' => $topicKey,
+				];
+				$topicKey += 1;
+			}
+			$unitList[$unitKey] = [
+				'name' => $unit->name,
+				'topics' => $topicList,
+				'number' => $unitKey,
+			];
+			$unitKey += 1;
+		}
+
+		$app->render('admin/displaychecklist.php', [
+			'subject' => $xml->subject,
+			'units' => $unitList,
+		]);
+
+	};
+	
 })->name('eda-upload.post');
