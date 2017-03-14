@@ -7,7 +7,12 @@
 		<script src="https://use.fontawesome.com/3ea26fd8d9.js"></script>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
-		<script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+		<style>
+		.initiallyHidden {
+			display: none;
+		}
+		</style>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" type="text/javascript"></script>
 	</head>
 	<body class="w3-container">
 		<header class="w3-container w3-teal">
@@ -18,7 +23,7 @@
 		{% include 'templates/partials/navigation.php' %}
 		{% block content %} {% endblock %}	
 		<footer class="w3-container w3-teal">
-			<h5>(c) Edanalytics Ltd 2016 - 2017.</h5>
+			<h5><i class=" fa fa-copyright"></i> Edanalytics Ltd 2016 - 2017.</h5>
 			<p></p>
 		</footer>
 	</body>

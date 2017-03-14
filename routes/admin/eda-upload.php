@@ -1,6 +1,7 @@
 <?php
 
 use Target\Database\Template;
+use Target\Database\Checklist;
 
 $app->get('/eda-upload', function() use($app) {
 	$app->render('admin/eda-upload.php');
@@ -25,7 +26,7 @@ $app->post('/eda-upload', function() use($app) {
 		]);
 	};
 
-	if ($fileType == "template") {
+	if (($fileType == "template") or ($fileType == "checklist")) {
 		$fullFileName = $_FILES["fileToUpload"]["tmp_name"];
 		$targetDir = "uploads/templates/";
 		$targetFile = $targetDir . basename($_FILES["fileToUpload"]["tmp_name"]);
@@ -60,7 +61,8 @@ $app->post('/eda-upload', function() use($app) {
 				$uploadOK = 0;
 			}
 		}
-		
+	}
+	if ($fileType == "template") {
 		$xml = simplexml_load_file($targetFile);
 		
 		$template = new Template;
@@ -162,36 +164,55 @@ $app->post('/eda-upload', function() use($app) {
 	};
 	
 	if ($fileType == "checklist") {
-		$fullFileName = $_FILES["fileToUpload"]["tmp_name"];
-		$xml = simplexml_load_file($fullFileName);
-
-
-		$unitKey = 0;
+		
+		$xml = simplexml_load_file($targetFile);
+		
+		$checklist = new Checklist;
+		$checklist->create([
+			'filename' => $targetFile,
+			'subject' => $xml->subject,
+			'board' => $xml->board,
+			'syllabus' => $xml->syllabus,
+			'author' => $xml->author,
+			'organisation' => $xml->organisation,
+		]);
+		
+		$unitKey = 1;
 		$unitList = [];
+		$line = 1;
 		foreach ($xml->units->children() as $unit){
-			$topicKey = 0;
+			$topicKey = 1;
 			$topicList = [];
+			$unitLine = $line;
+			$line += 1;
 			foreach ($unit->topics->topic as $topic){
-				$checkKey = 0;
+				$checkKey = 1;
 				$checkList = [];
+				$topicLine = $line;
+				$line += 1;
 				foreach ($topic->checks->check as $check){
 					$checkList[$checkKey] = [
 						'text' => $check->text,
 						'rank' => $check->rank,
+						'sid' => $unitKey.'.'.$topicKey.'.'.$checkKey,
+						'line' => $line,
 					];
 					$checkKey +=1;
+					$line += 1;
 				}
 				$topicList[$topicKey] = [
 					'name' => $topic->name,
 					'checks' => $checkList,
-					'number' => $topicKey,
+					'sid' => $unitKey.'.'.$topicKey,
+					'line' => $topicLine,
 				];
 				$topicKey += 1;
 			}
 			$unitList[$unitKey] = [
 				'name' => $unit->name,
 				'topics' => $topicList,
-				'number' => $unitKey,
+				'sid' => $unitKey,
+				'line' => $unitLine,
 			];
 			$unitKey += 1;
 		}
