@@ -1,4 +1,4 @@
-{% extends 'templates/default.php' %}
+{% extends 'templates/defaultjQ.php' %}
 
 {% block title %}DisplayBlocks{% endblock %}
 {% block content %}

@@ -60,7 +60,7 @@ $app->get('/testresult/:testresult_id', function($testresult_id) use($app) {
 	// Load template file
 	$xml = simplexml_load_file($template->filename);
 
-	$total =0;
+	$total = 0;
 	$mark = explode(',',$result->marks);
 	foreach ($mark as $m){
 		$total += $m;
@@ -76,7 +76,7 @@ $app->get('/testresult/:testresult_id', function($testresult_id) use($app) {
 			'Marks' => $gb->rawmark,
 			'UMS' => $gb->ums,
 		];
-		if ($total > $gb->rawmark){
+		if ($total >= $gb->rawmark){
 			$grade = $gb->grade;
 			$gradeKey = $key;
 		};
@@ -124,8 +124,6 @@ $app->get('/testresult/:testresult_id', function($testresult_id) use($app) {
 		$idBlock['table'][0]['Grade'] = $grade;
 		$idBlock['table'][0]['UMS'] = $ums;
 		// Fix up database
-		echo 'Fix';
-		var_dump($result->ums);
 		$result->update([
 			'total' => $total,
 			'grade' => $grade,
