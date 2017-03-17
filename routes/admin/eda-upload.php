@@ -31,7 +31,6 @@ $app->post('/eda-upload', function() use($app) {
 		$targetDir = "uploads/templates/";
 		$targetFile = $targetDir . basename($_FILES["fileToUpload"]["tmp_name"]);
 		$targetFile =substr($targetFile, 0, -strlen(pathinfo($targetFile, PATHINFO_EXTENSION))).'xml';
-		echo $targetFile.'<br>';
 		
 		$uploadOk = 1;
 		$uploadMessage = '';
@@ -55,7 +54,7 @@ $app->post('/eda-upload', function() use($app) {
 		// if everything is ok, try to upload file
 		if ($uploadOk == 1) {
 			if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $targetFile)) {
-				echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
+
 			} else {
 				$uploadMessage = "Sorry, there was an error uploading your file.";
 				$uploadOK = 0;
@@ -176,47 +175,7 @@ $app->post('/eda-upload', function() use($app) {
 			'author' => $xml->author,
 			'organisation' => $xml->organisation,
 		]);
-		
-		$unitKey = 1;
-		$unitList = [];
-		$line = 1;
-		foreach ($xml->units->children() as $unit){
-			$topicKey = 1;
-			$topicList = [];
-			$unitLine = $line;
-			$line += 1;
-			foreach ($unit->topics->topic as $topic){
-				$checkKey = 1;
-				$checkList = [];
-				$topicLine = $line;
-				$line += 1;
-				foreach ($topic->checks->check as $check){
-					$checkList[$checkKey] = [
-						'text' => $check->text,
-						'rank' => $check->rank,
-						'sid' => $unitKey.'.'.$topicKey.'.'.$checkKey,
-						'line' => $line,
-					];
-					$checkKey +=1;
-					$line += 1;
-				}
-				$topicList[$topicKey] = [
-					'name' => $topic->name,
-					'checks' => $checkList,
-					'sid' => $unitKey.'.'.$topicKey,
-					'line' => $topicLine,
-				];
-				$topicKey += 1;
-			}
-			$unitList[$unitKey] = [
-				'name' => $unit->name,
-				'topics' => $topicList,
-				'sid' => $unitKey,
-				'line' => $unitLine,
-			];
-			$unitKey += 1;
-		}
-
+		$unitList = buildUnitList($xml);
 		$app->render('admin/displaychecklist.php', [
 			'subject' => $xml->subject,
 			'units' => $unitList,

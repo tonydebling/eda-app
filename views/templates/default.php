@@ -9,7 +9,7 @@
 	</head>
 	<body class="w3-container">
 		<header class="w3-container w3-teal">
-		  <h1><img src="images/askeddy-green-disc.png" width=5% height=5% />
+		  <h1><img src="images/askeddy-green-disc.png" onerror="this.src='../images/askeddy-green-disc.png'" width=5% height=5% />
 		  <SPACER TYPE=HORIZONTAL SIZE=50>edanalytics.co.uk</h1>
 		</header>
 		{% include 'templates/partials/messages.php' %}

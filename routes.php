@@ -17,6 +17,7 @@ require INC_ROOT . '/app/routes/user/all.php';
 require INC_ROOT . '/app/routes/database/template.php';
 require INC_ROOT . '/app/routes/database/testpoint.php';
 require INC_ROOT . '/app/routes/database/testresult.php';
+require INC_ROOT . '/app/routes/database/plc.php';
 require INC_ROOT . '/app/routes/database/getdata.php';
 require INC_ROOT . '/app/routes/database/browse.php';
 

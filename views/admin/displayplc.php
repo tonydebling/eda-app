@@ -33,8 +33,9 @@
 			{{ topic.name }}<br>
 			</div>
 			<div style="display: none" id="desc-s{{topic.line}}">
-			
+				
 				{% for check in topic.checks %}
+					<i class="fa fa-fire" style="color:red" id="hot{{topic.line}}" line={{topic.line}}></i>
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					{{ check.text }} [{{ check.rank }}]<br>
 				{% endfor %}
