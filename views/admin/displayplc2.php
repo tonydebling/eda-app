@@ -40,13 +40,20 @@
 			
 		});
 
-		$("[togg]").on('click',function(){
+		
+		
+		$("i.fa-toggle-up").on('click',function(){
 			var id = $(this).attr('line');
 			$('#desc-s'+id).toggle();
-			$('#b'+id).toggleClass("fa-toggle-down fa-toggle-up");
-
+			$('#b-minus-s'+id).toggle();
+			$('#b-plus-s'+id).toggle();
 		});
-
+		$("i.fa-toggle-down").on('click',function(){
+			var id = $(this).attr('line');
+			$('#desc-s'+id).toggle();
+			$('#b-minus-s'+id).toggle();
+			$('#b-plus-s'+id).toggle();
+		});
 		
 		$("i.fa-fire").on('click',function(){
 			var line = $(this).attr('line');
@@ -107,8 +114,8 @@
 			</div></div>
 			<div>
 			<i class="fa fa-fire" style="color:lightgray" id="hot{{line.id}}" line={{line.id}} up=0></i>
-			<i class="fa fa-toggle-up" id="b{{line.id}}" togg=true line={{line.id}}> </i>
-			
+			<i class="fa fa-toggle-up" id="b-minus-s{{line.id}}" line={{line.id}}> </i>
+			<i class="fa fa-toggle-down" style="display: none" id="b-plus-s{{line.id}}" line={{line.id}}></i>			
 			{{ line.text }}<br>
 			</div>
 			<div id="desc-s{{line.id}}">
@@ -118,8 +125,8 @@
 			<div>
 			<i class="fa fa-fire" style="color:lightgray" id="hot{{line.id}}" line={{line.id}} up=0> </i>
 			&nbsp;&nbsp;&nbsp;&nbsp;
-
-			<i class="fa fa-toggle-down" id="b{{line.id}}" togg=true line={{line.id}}> </i>
+			<i class="fa fa-toggle-up" style="display: none" id="b-minus-s{{line.id}}" line={{line.id}}> </i>
+			<i class="fa fa-toggle-down" id="b-plus-s{{line.id}}" line={{line.id}}> </i>
 			{{ line.text }}<br>
 			</div>
 			<div style="display: none" id="desc-s{{line.id}}">

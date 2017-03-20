@@ -3,7 +3,7 @@
 {% endif %}
 
 
-<ul class="w3-navbar w3-teal">
+<ul class="w3-navbar w3-orange">
 	
 	
 	{% if auth %}

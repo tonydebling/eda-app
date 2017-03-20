@@ -14,60 +14,101 @@ $app->get('/plc/:plc_id', function($plc_id) use($app) {
 		$app->notFound();
 		die();
 	}
+
 	$student = $plc->student;
 	$checklist =$plc->checklist;
 	$xml = simplexml_load_file($checklist->filename);
-	$unitList = buildUnitList($xml);
+	$checklistLookUpTable = buildLookUpTable($xml);
 	
-	
+	if ($plc->ratings == null){
+		$blank = array_fill(0,count($checklistLookUpTable),"0");
+		$plc->update(['ratings' => implode("",$blank),]);
+	};
+	$jsonLookUpTable = json_encode(buildJsLookUpTable($xml));
 	$app->render('admin/displayplc.php', [
-		'subject' => $xml->subject,
-		'units' => $unitList,
+		'checklist' => $checklistLookUpTable,
+		'jsonLookUpTable' => $jsonLookUpTable,
+		'ratings' => $plc->ratings,
 	]);
 	
 	die();
 
 	})->name('plc');
 	
-	function buildUnitList($xml){
-		$unitKey = 1;
-		$unitList = [];
+	function buildLookUpTable($xml){
+
+		$lookUpTable = [];
+		$lookUpTable[0] = [
+			'id' => 0,
+			'type' => 'r',
+			'text' => (string)$xml->subject,
+			'parent' => -1,
+		];
 		$line = 1;
 		foreach ($xml->units->children() as $unit){
-			$topicKey = 1;
-			$topicList = [];
+			$lookUpTable[$line] = [
+				'id' => $line,
+				'type' => 'u',
+				'text' => (string)$unit->name,
+				'parent' => 0,
+			];
 			$unitLine = $line;
 			$line += 1;
 			foreach ($unit->topics->topic as $topic){
-				$checkKey = 1;
-				$checkList = [];
+				$lookUpTable[$line] = [
+					'id' => $line,
+					'type' => 't',
+					'text' => (string)$topic->name,
+					'parent' => $unitLine,					
+				];
 				$topicLine = $line;
 				$line += 1;
 				foreach ($topic->checks->check as $check){
-					$checkList[$checkKey] = [
-						'text' => $check->text,
-						'rank' => $check->rank,
-						'sid' => $unitKey.'.'.$topicKey.'.'.$checkKey,
-						'line' => $line,
-					];
-					$checkKey +=1;
-					$line += 1;
-				}
-				$topicList[$topicKey] = [
-					'name' => $topic->name,
-					'checks' => $checkList,
-					'sid' => $unitKey.'.'.$topicKey,
-					'line' => $topicLine,
-				];
-				$topicKey += 1;
-			}
-			$unitList[$unitKey] = [
-				'name' => $unit->name,
-				'topics' => $topicList,
-				'sid' => $unitKey,
-				'line' => $unitLine,
-			];
-			$unitKey += 1;
-		}
-		return $unitList;
+						$lookUpTable[$line] = [
+							'id' => $line,
+							'type' => 'c',
+							'text' => (string)$check->text,
+							'rank' => $check->rank,
+							'parent' => $topicLine,
+						];
+						$line += 1;
+					};
+			};
+		};
+		return $lookUpTable;
 	};
+
+	function buildJsLookUpTable($xml){
+
+		$jsLookUpTable = [];
+		$jsLookUpTable[0] = [
+			'type' => 'r',
+			'parent' => -1,
+		];
+		$line = 1;
+		foreach ($xml->units->children() as $unit){
+			$jsLookUpTable[$line] = [
+				'type' => 'u',
+				'parent' => 0,
+			];
+			$unitLine = $line;
+			$line += 1;
+			foreach ($unit->topics->topic as $topic){
+				$jsLookUpTable[$line] = [
+					'type' => 't',
+					'parent' => $unitLine,					
+				];
+				$topicLine = $line;
+				$line += 1;
+				foreach ($topic->checks->check as $check){
+						$jsLookUpTable[$line] = [
+							'type' => 'c',
+							'rank' => $check->rank,
+							'parent' => $topicLine,
+						];
+						$line += 1;
+					};
+			};
+		};
+		return $jsLookUpTable;
+	};	
