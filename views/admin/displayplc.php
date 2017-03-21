@@ -44,9 +44,32 @@
 			var id = $(this).attr('line');
 			$('#desc-s'+id).toggle();
 			$('#b'+id).toggleClass("fa-toggle-down fa-toggle-up");
-
 		});
 
+		$("[rag]").on('click',function(){
+			var id = $(this).attr('line');
+			ragvalue = ratings[id];
+			if (isHot(id)) {
+				ragvalue -=4;
+			};
+			if (ragvalue == 0) {
+				$(this).toggleClass("fa-stop fa-thumbs-down");
+				$(this).css("color","red");
+				ratings[id] +=1;
+			} else if (ragvalue == 1){
+				$(this).toggleClass("fa-thumbs-down fa-pause");
+				$(this).css("color","orange");
+				ratings[id] +=1;
+			} else if (ragvalue == 2){
+				$(this).toggleClass("fa-pause fa-thumbs-up");
+				$(this).css("color","green");
+				ratings[id] +=1;
+			} else {
+				$(this).toggleClass("fa-thumbs-up fa-thumbs-down");
+				$(this).css("color","red");
+				ratings[id] -=2;
+			};
+		});
 		
 		$("i.fa-fire").on('click',function(){
 			var line = $(this).attr('line');
@@ -108,7 +131,6 @@
 			<div>
 			<i class="fa fa-fire" style="color:lightgray" id="hot{{line.id}}" line={{line.id}} up=0></i>
 			<i class="fa fa-toggle-up" id="b{{line.id}}" togg=true line={{line.id}}> </i>
-			
 			{{ line.text }}<br>
 			</div>
 			<div id="desc-s{{line.id}}">
@@ -118,7 +140,6 @@
 			<div>
 			<i class="fa fa-fire" style="color:lightgray" id="hot{{line.id}}" line={{line.id}} up=0> </i>
 			&nbsp;&nbsp;&nbsp;&nbsp;
-
 			<i class="fa fa-toggle-down" id="b{{line.id}}" togg=true line={{line.id}}> </i>
 			{{ line.text }}<br>
 			</div>
@@ -126,6 +147,7 @@
 		{% elseif line.type == 'c' %}
 			<i class="fa fa-fire" style="color:lightgray" id="hot{{line.id}}" line={{line.id}} up=0></i>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<i class="fa fa-stop" id="r{{line.id}}" style="color:lightgray" line={{line.id}} rag=0> </i>
 			{{ line.text }} [{{ line.rank }}]<br>
 		{% else %}
 			Dodgy line type!!!
