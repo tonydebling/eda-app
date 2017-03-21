@@ -46,29 +46,40 @@
 			$('#b'+id).toggleClass("fa-toggle-down fa-toggle-up");
 		});
 
-		$("[rag]").on('click',function(){
-			var id = $(this).attr('line');
-			ragvalue = ratings[id];
-			if (isHot(id)) {
-				ragvalue -=4;
-			};
-			if (ragvalue == 0) {
-				$(this).toggleClass("fa-stop fa-thumbs-down");
-				$(this).css("color","red");
-				ratings[id] +=1;
-			} else if (ragvalue == 1){
-				$(this).toggleClass("fa-thumbs-down fa-pause");
-				$(this).css("color","orange");
-				ratings[id] +=1;
-			} else if (ragvalue == 2){
-				$(this).toggleClass("fa-pause fa-thumbs-up");
+		$("[rag]").on({
+			click: function(){
+				var id = $(this).attr('line');
+				ragvalue = ratings[id];
+				if (isHot(id)) {
+					ragvalue -=4;
+				};
+				if (ragvalue == 0) {
+	//				$(this).toggleClass("fa-stop fa-thumbs-down");
+					$(this).css("color","red");
+					ratings[id] +=1;
+				} else if (ragvalue == 1){
+	//				$(this).toggleClass("fa-thumbs-down fa-pause");
+					$(this).css("color","orange");
+					ratings[id] +=1;
+				} else if (ragvalue == 2){
+	//				$(this).toggleClass("fa-pause fa-thumbs-up");
+					$(this).css("color","green");
+					ratings[id] +=1;
+				} else {
+	//				$(this).toggleClass("fa-thumbs-up fa-thumbs-down");
+					$(this).css("color","red");
+					ratings[id] -=2;
+				};
+			},
+			dblclick: function() {
+				var id = $(this).attr('line');
+				if (isHot(id)) {
+					ratings[id] = 7;
+				} else {
+					ratings[id] = 3;
+				};
 				$(this).css("color","green");
-				ratings[id] +=1;
-			} else {
-				$(this).toggleClass("fa-thumbs-up fa-thumbs-down");
-				$(this).css("color","red");
-				ratings[id] -=2;
-			};
+			}
 		});
 		
 		$("i.fa-fire").on('click',function(){
