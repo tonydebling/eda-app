@@ -8,17 +8,12 @@
 		<script src="https://use.fontawesome.com/3ea26fd8d9.js"></script>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
-		<style>
-		.initiallyHidden {
-			display: none;
-		}
-		</style>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" type="text/javascript"></script>
 	</head>
 	<body class="w3-container">
 		<header class="w3-container w3-orange">
-		  <h1><img src="images/askeddy-green-disc.png" onerror="this.src='../images/askeddy-green-disc.png'" width=5% height=5% />
-		  <SPACER TYPE=HORIZONTAL SIZE=50>edanalytics.co.uk</h1>
+		  <h1><img src="images/askeddy-green-disc.PNG" onerror="this.src='../images/askeddy-green-disc.PNG'" width=5% height=5% />
+		  <SPACER TYPE=HORIZONTAL SIZE=50>AskEddy.co.uk</h1>
 		</header>
 		{% include 'templates/partials/messages.php' %}
 		{% include 'templates/partials/navigation.php' %}

@@ -3,6 +3,7 @@
 {% block title %}School{% endblock %}
 {% block content %}
 	<form action="{{ urlFor('stufindschool.post')}}" method="post" autocomplete="off">
+	<p></p>
 		<div>
 			<label for"identifier">Enter school postcode</label>
 			<input type="text" name="postcode" id="postcode" {% if request.post('postcode') %} value={{ request.post('identifier') }}{% endif %}>

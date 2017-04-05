@@ -9,6 +9,7 @@ class Plc extends Eloquent{
 	protected $fillable = [
 		'student_id',
 		'checklist_id',
+		'schoolsubject_id',
 		'ratings',
 		'hot_topics',
 		'lower_rank',
@@ -24,5 +25,9 @@ class Plc extends Eloquent{
 	{
 			return $this->belongsTo('Target\Database\Student');
 	}
-
+	
+	public function schoolsubject()
+	{
+			return $this->belongsTo('Target\Database\Schoolsubject');
+	}
 }

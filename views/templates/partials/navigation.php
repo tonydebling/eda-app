@@ -1,8 +1,3 @@
-{% if auth %}
-	Hello,	{{ auth.getFullNameOrUsername() }}
-{% endif %}
-
-
 <ul class="w3-navbar w3-orange">
 	
 	

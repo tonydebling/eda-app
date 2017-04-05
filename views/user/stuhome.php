@@ -1,20 +1,16 @@
-{% extends 'templates/default.php' %}
+{% extends 'templates/defaultjQ.php' %}
 
 {% block title %}{{ user.getFullNameOrUsername() }}{% endblock %}
 {% block content %}
-	<h1>{{ user.getFullName() }}</h1>
-
-	<dl>
-	{% if user.getFullName() %}
-		<dt>Full name</dt>
-		<dd>{{ user.getFullName() }}</dd>
-	{% endif %}
-	<dt>Email</dt>
-	<dd>{{ user.email }}</dd>
-	</dl>	
-	{% for classe in classes %}
+	<h2>Subject Dashboard</h2>
+	{% for line in dash %}
 		<div>
-			Class {{ classe.school_classe_id }}
+			{{ line.subject }}
+				{% if (line.plc_id != null) %}
+					<a href="{{ urlFor('plc', {plc_id: line.plc_id}) }}"
+					class="fa fa-check-square" style="color:green" ></a>
+					{{ line.plc_id }}
+				{% endif %}
 		</div>
 	{% endfor %}
 {% endblock %}

@@ -13,10 +13,12 @@
 				{% if user.getFullName() %}
 				 {{ user.getFullName() }}
 				{% endif %}
+				</a>
 				{% if user.is_student %}
 					(Student)
 				{% endif %}
 			</div>
 		{% endfor %}
 	{% endif %}
+	<p></p>
 {% endblock %}

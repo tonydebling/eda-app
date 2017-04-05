@@ -4,6 +4,7 @@
 {% block content %}
 
 	<div class="w3-responsive" ng-app="findschoolApp" ng-controller="findschoolCtrl">
+	<p></p>
 	<form action="{{ urlFor('findschool.post')}}" method="post" autocomplete="off">
 		<div>
 			<label for"postcode">Enter school postcode</label>
