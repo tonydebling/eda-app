@@ -4,9 +4,11 @@ use Target\Database\Student;
 use Target\Database\Plc;
 use Target\Database\Checklist;
 
-$app->get('/plc/:plc_id', function($plc_id) use($app) {
+$app->get('/plc', function() use($app) {
 
 	$user = $app->user->where('id',$_SESSION[$app->config->get('auth.session')])->first();
+	
+	$plc_id = $app->request()->params('id');
 	
 	$plcs = new Plc;
 	$plc = $plcs->find($plc_id);
@@ -26,6 +28,7 @@ $app->get('/plc/:plc_id', function($plc_id) use($app) {
 	};
 	$jsonLookUpTable = json_encode(buildJsLookUpTable($xml));
 	$app->render('admin/displayplc.php', [
+		'plc_id' => $plc_id,
 		'checklist' => $checklistLookUpTable,
 		'jsonLookUpTable' => $jsonLookUpTable,
 		'ratings' => $plc->ratings,
@@ -40,7 +43,7 @@ $app->get('/plc/:plc_id', function($plc_id) use($app) {
 		$lookUpTable = [];
 		$lookUpTable[0] = [
 			'id' => 0,
-			'type' => 'r',
+			'nodetype' => 'r',
 			'text' => (string)$xml->subject,
 			'parent' => -1,
 		];
@@ -48,7 +51,7 @@ $app->get('/plc/:plc_id', function($plc_id) use($app) {
 		foreach ($xml->units->children() as $unit){
 			$lookUpTable[$line] = [
 				'id' => $line,
-				'type' => 'u',
+				'nodetype' => 'u',
 				'text' => (string)$unit->name,
 				'parent' => 0,
 			];
@@ -57,7 +60,7 @@ $app->get('/plc/:plc_id', function($plc_id) use($app) {
 			foreach ($unit->topics->topic as $topic){
 				$lookUpTable[$line] = [
 					'id' => $line,
-					'type' => 't',
+					'nodetype' => 't',
 					'text' => (string)$topic->name,
 					'parent' => $unitLine,					
 				];
@@ -66,7 +69,7 @@ $app->get('/plc/:plc_id', function($plc_id) use($app) {
 				foreach ($topic->checks->check as $check){
 						$lookUpTable[$line] = [
 							'id' => $line,
-							'type' => 'c',
+							'nodetype' => 'c',
 							'text' => (string)$check->text,
 							'rank' => $check->rank,
 							'parent' => $topicLine,
@@ -82,27 +85,27 @@ $app->get('/plc/:plc_id', function($plc_id) use($app) {
 
 		$jsLookUpTable = [];
 		$jsLookUpTable[0] = [
-			'type' => 'r',
+			'nodetype' => 'r',
 			'parent' => -1,
 		];
 		$line = 1;
 		foreach ($xml->units->children() as $unit){
 			$jsLookUpTable[$line] = [
-				'type' => 'u',
+				'nodetype' => 'u',
 				'parent' => 0,
 			];
 			$unitLine = $line;
 			$line += 1;
 			foreach ($unit->topics->topic as $topic){
 				$jsLookUpTable[$line] = [
-					'type' => 't',
+					'nodetype' => 't',
 					'parent' => $unitLine,					
 				];
 				$topicLine = $line;
 				$line += 1;
 				foreach ($topic->checks->check as $check){
 						$jsLookUpTable[$line] = [
-							'type' => 'c',
+							'nodetype' => 'c',
 							'rank' => $check->rank,
 							'parent' => $topicLine,
 						];
@@ -111,4 +114,17 @@ $app->get('/plc/:plc_id', function($plc_id) use($app) {
 			};
 		};
 		return $jsLookUpTable;
-	};	
+	};
+	
+	
+$app->post('/plc', function() use($app) {
+	
+	$request = $app->request;
+	$plc_id = $request->post('plc_id');
+	$ratings = $request->post('ratings');
+	echo $plc_id;
+	echo 'ratings:';
+	echo $ratings;
+	die();
+	
+})->name('plc.post');

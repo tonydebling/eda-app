@@ -1,4 +1,4 @@
-{% extends 'templates/defaultjQ.php' %}
+{% extends 'templates/default.php' %}
 
 {% block title %}Checklist{% endblock %}
 
@@ -6,38 +6,72 @@
 	<script>
 	$(document).ready(function(){
 
+		var plc_id = '{{ plc_id }}';
 		var ratingsContent = '{{ ratings }}';
+		var maxIndexPlusOne = ratingsContent.length;
 		var ratings = [];
-		for (i = 0; i < ratingsContent.length; i++){
+		for (i = 0; i < maxIndexPlusOne; i++){
 			ratings.push(Number(ratingsContent[i]));
 		}
-		ratings[1]=4;
-		ratings[9]=4;
-		ratings[12]=4;
-		ratings[13]=4;	
-		
 		var jsonLookUpTable = '{{ jsonLookUpTable|raw}}';
 		var lookUp = JSON.parse(jsonLookUpTable);
-
+		
+		$(document).ajaxError(function(event, jqXHR, settings, thrownError){
+			alert(thrownError);
+		});
+		
 		function isHot(line){
 			return (Number(ratings[line]) > 3);
 		};
 		
 		function setHot(line){
-			if (!isHot(line)) {ratings[line] +=4;}	
+			if (!isHot(line)) {ratings[line] +=4;}
 		};
 		
 		function clearHot(line){
 			if (isHot(line)) {ratings[line] -=4;}
-			};		
+		};
 
+		var request = null;
+		
+		function updatePlcRecord(){
+			ratingsContent = String(ratings).replace(/,/g,"");
+			url = "localhost"+"{{ urlFor('updateplcrecord')}}";
+			data = 'plc_id='+plc_id+'&ratings='+ratingsContent;
+			$.ajax({
+				url: "updateplcrecord?plc_id=1",
+				data: {plc_id: plc_id, ratings: ratingsContent},
+				type: "GET",
+				success: function(data){
+//					alert("Success");
+				},
+			});
+		};
+	
+		// Colour the initial tree
 		$("i.fa-fire").each(function(index) {
 			var line = $(this).attr('line');
 			if (isHot(line)) {
 				$(this).css("color","red");
 			};
 			$(this).attr("up", lookUp[line]['parent']);
-			
+		});
+
+		$("i.fa-stop").each(function(index) {
+			var id = $(this).attr('line');
+			ragvalue = ratings[id];
+			if (isHot(id)) {
+				ragvalue -=4;
+			};
+			if (ragvalue == 0) {
+				$(this).css("color","lightgray");
+			} else if (ragvalue == 1){
+				$(this).css("color","red");
+			} else if (ragvalue == 2){
+				$(this).css("color","orange");
+			} else {
+				$(this).css("color","green");
+			};
 		});
 
 		$("[togg]").on('click',function(){
@@ -54,22 +88,19 @@
 					ragvalue -=4;
 				};
 				if (ragvalue == 0) {
-	//				$(this).toggleClass("fa-stop fa-thumbs-down");
 					$(this).css("color","red");
 					ratings[id] +=1;
 				} else if (ragvalue == 1){
-	//				$(this).toggleClass("fa-thumbs-down fa-pause");
 					$(this).css("color","orange");
 					ratings[id] +=1;
 				} else if (ragvalue == 2){
-	//				$(this).toggleClass("fa-pause fa-thumbs-up");
 					$(this).css("color","green");
 					ratings[id] +=1;
 				} else {
-	//				$(this).toggleClass("fa-thumbs-up fa-thumbs-down");
 					$(this).css("color","red");
 					ratings[id] -=2;
 				};
+				updatePlcRecord();
 			},
 			dblclick: function() {
 				var id = $(this).attr('line');
@@ -79,12 +110,13 @@
 					ratings[id] = 3;
 				};
 				$(this).css("color","green");
+				updatePlcRecord();
 			}
 		});
 		
 		$("i.fa-fire").on('click',function(){
 			var line = $(this).attr('line');
-			if (lookUp[line]['type'] != 'c'){
+			if (lookUp[line]['nodetype'] != 'c'){
 				return;
 			};
 			if (isHot(line)) {
@@ -94,22 +126,24 @@
 				var unit = lookUp[topic]['parent'];
 				var allClear = true;
 				i = topic + 1;
-				while (lookUp[i]['type'] != 't') {
+				while (lookUp[i]['nodetype'] == 'c') {
 					if (isHot(i)) {
 						allClear = false;
 					}
 					i += 1;
+					if (i == maxIndexPlusOne) { break;};
 				};
 				if (allClear) {
 					clearHot(topic);
 					$("#hot"+topic).css("color","lightgray");
 					allClear = true;
 					i = unit + 1;
-					while (lookUp[i]['type'] != 'u') {
+					while (lookUp[i]['nodetype'] != 'u') {
 						if (isHot(i)) {
 							allClear = false;
 						}
 						i += 1;
+						if (i == maxIndexPlusOne) { break;};
 					};
 					if (allClear){
 						clearHot(unit);
@@ -125,7 +159,8 @@
 				var unit = lookUp[topic]['parent'];
 				setHot(unit);
 				$("#hot"+unit).css("color","red");
-			};		
+			};
+			updatePlcRecord();
 		});
 	
 	});
@@ -133,11 +168,12 @@
 	</script>
 
 	<div class="w3-responsive">
+
 	{% for line in checklist %}
-		{% if line.type == 'r' %}
-			<h3> {{line.text}} </h3>
+		{% if line.nodetype == 'r' %}
+			<h3> {{line.text}} Checklist</h3>
 			<div><div>
-		{% elseif line.type == 'u'%}
+		{% elseif line.nodetype == 'u'%}
 			</div></div>
 			<div>
 			<i class="fa fa-fire" style="color:lightgray" id="hot{{line.id}}" line={{line.id}} up=0></i>
@@ -146,7 +182,7 @@
 			</div>
 			<div id="desc-s{{line.id}}">
 			<div>
-		{% elseif line.type == 't' %}
+		{% elseif line.nodetype == 't' %}
 			</div>
 			<div>
 			<i class="fa fa-fire" style="color:lightgray" id="hot{{line.id}}" line={{line.id}} up=0> </i>
@@ -155,7 +191,7 @@
 			{{ line.text }}<br>
 			</div>
 			<div style="display: none" id="desc-s{{line.id}}">
-		{% elseif line.type == 'c' %}
+		{% elseif line.nodetype == 'c' %}
 			<i class="fa fa-fire" style="color:lightgray" id="hot{{line.id}}" line={{line.id}} up=0></i>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<i class="fa fa-stop" id="r{{line.id}}" style="color:lightgray" line={{line.id}} rag=0> </i>
