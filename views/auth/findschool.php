@@ -29,7 +29,6 @@ $(document).ready(function(){
 				$("li").on('click',function(){
 					var id = $(this).attr('id');
 					window.location.href = returnUrl+"?id="+id;
-					alert(id);
 				});
 			});
 			$("#schlist").show();
