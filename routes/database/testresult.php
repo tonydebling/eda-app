@@ -8,10 +8,14 @@ use Target\Database\Testpoint;
 use Target\Database\Testresult;
 use Target\Database\Template;
 
-$app->get('/testresult/:testresult_id', function($testresult_id) use($app) {
+$app->get('/testresult', function() use($app) {
 
 	$user = $app->user->where('id',$_SESSION[$app->config->get('auth.session')])->first();
-	
+	$testresult_id = $app->request()->params('id');
+	if (!$testresult_id) {
+		$app->notFound();
+		die();
+	};
 	$testresults = new Testresult;
 	$result = $testresults->find($testresult_id);
 	$student = $result->student;
@@ -171,7 +175,7 @@ $app->get('/testresult/:testresult_id', function($testresult_id) use($app) {
 	foreach($xml->gradeboundaries->gb as $gb){
 		$i = array((string) $gb->grade)[0];
 		$gbrow0[$i] = $gb->rawmark;
-		$gbrow1[$i] = $gb->ums;		
+		$gbrow1[$i] = $gb->ums;
 	};
 	$gbTable[0] = $gbrow0;
 	$gbTable[1] = $gbrow1;
@@ -187,5 +191,5 @@ $app->get('/testresult/:testresult_id', function($testresult_id) use($app) {
 		'blocks' => [$idBlock, $pBlock, $mBlock,$gBlock],
 	]);
 	die();
-	
+
 	})->name('testresult');

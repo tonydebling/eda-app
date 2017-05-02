@@ -19,9 +19,13 @@ $app->get('/getdata', function() use($app) {
 
 $app->get('/getdata/schools', function() use($app) {
 	
+	$sstr = $app->request()->params('sstr');
 	$school = new School;
+	$table = [];
 	$schools = $school
-//		->where('postcode', 'LIKE', 'TN2%')
+		->where('postcode', 'LIKE', $sstr.'%')
+		->orwhere('name','LIKE','%'.$sstr.'%')
+		->take(20)
 		->get();
 	$table = $schools->toArray();
 	$jtable = json_encode($table);

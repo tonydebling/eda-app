@@ -1,7 +1,31 @@
 <?php
 
 $app->get('/login', $guest(), function() use($app) {
-	$app->render('auth/login.php');
+	
+	$school_id = $app->request()->params('id');
+	if ($school_id == NULL){
+		$base = $app->config->get('app.url');
+		$returnUrl = $base.$app->urlFor('login');
+		$app->render('auth/findschool.php', [
+			'returnUrl' => $returnUrl,
+		]);
+	} else {
+		$school = $app->school->where('id',$school_id)->first();
+		if ($school){
+			$app->render('auth/login.php', [
+				'school_id' => $school->id,
+				'name' => $school->name,
+				'errors' => [],
+				]);
+		} else {
+			$app->flash('global', 'School not found with this id');
+			$base = $app->config->get('app.url');
+			$returnUrl = $base.$app->urlFor('login');
+			$app->render('auth/findschool.php');
+		};
+		die();
+	}	
+
 })->name('login');
 
 $app->post('/login', $guest(), function() use($app) {

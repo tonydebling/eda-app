@@ -1,7 +1,8 @@
 <?php
 
-$app->get('/u/:user_id', function($user_id) use($app) {
+$app->get('/user', function() use($app) {
 	
+	$user_id = $app->request()->params('id');
 	$user = $app->user->where('id', $user_id)->first();
 	
 	if (!$user) {

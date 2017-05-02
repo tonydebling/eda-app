@@ -36,10 +36,10 @@
 		
 		function updatePlcRecord(){
 			ratingsContent = String(ratings).replace(/,/g,"");
-			url = "localhost"+"{{ urlFor('updateplcrecord')}}";
+			var updateUrl = "updateplcrecord?id=".plc_id;
 			data = 'plc_id='+plc_id+'&ratings='+ratingsContent;
 			$.ajax({
-				url: "updateplcrecord?plc_id=1",
+				url: updateUrl,
 				data: {plc_id: plc_id, ratings: ratingsContent},
 				type: "GET",
 				success: function(data){

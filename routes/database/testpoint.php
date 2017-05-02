@@ -8,11 +8,12 @@ use Target\Database\Testpoint;
 use Target\Database\Testresult;
 use Target\Database\Template;
 
-$app->get('/testpoint(/:testpoint_id)', function($testpoint_id = 0) use($app) {
+$app->get('/testpoint', function() use($app) {
 
-	$user = $app->user->where('id',$_SESSION[$app->config->get('auth.session')])->first();	
+	$user = $app->user->where('id',$_SESSION[$app->config->get('auth.session')])->first();
+	$testpoint_id = $app->request()->params('id');
 	// First section displays list of testpoints if id is not given
-	if ($testpoint_id == 0){
+	if ($testpoint_id == NULL){
 		
 		$testpoint = new Testpoint;
 		$testpoints = $testpoint

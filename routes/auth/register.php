@@ -2,9 +2,15 @@
 
 use Target\User\UserPermission;
 
-$app->get('/register(/:school_id)', $guest(), function($school_id = 0) use($app) {
-	if ($school_id == 0){
-		$app->render('auth/findschool.php');
+$app->get('/register', $guest(), function() use($app) {
+
+	$school_id = $app->request()->params('id');
+	if ($school_id == NULL){
+		$base = $app->config->get('app.url');
+		$returnUrl = $base.$app->urlFor('register');
+		$app->render('auth/findschool.php', [
+			'returnUrl' => $returnUrl,
+		]);
 	} else {
 		$school = $app->school->where('id',$school_id)->first();
 		if ($school){
@@ -14,10 +20,14 @@ $app->get('/register(/:school_id)', $guest(), function($school_id = 0) use($app)
 				'errors' => [],
 				]);
 		} else {
+			$app->flash('global', 'School not found with this id');
+			$base = $app->config->get('app.url');
+			$returnUrl = $base.$app->urlFor('register');
 			$app->render('auth/findschool.php');
 		};
 		die();
 	}
+	
 })->name('register');
 
 
@@ -31,7 +41,7 @@ $app->post('/findschool', $guest(), function() use($app) {
 		->first();
 	
 	if ($school){
-		$app->redirect($app->urlFor('register').'/'.$school->id);
+		$app->redirect($app->urlFor('register').'?id='.$school->id);
 		
 	} else {
 		$base = $app->config->get('app.url');

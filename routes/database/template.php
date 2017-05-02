@@ -2,10 +2,11 @@
 
 use Target\Database\Template;
 
-$app->get('/template(/:template_id)', function($template_id = 0) use($app) {
+$app->get('/template', function() use($app) {
 	
 	// First section displays list of templates if id is not given
-	if ($template_id == 0){
+	$template_id = $app->request()->params('id');
+	if ($template_id == NULL){
 		$templates = new Template;
 		$templates = $templates->get();
 		$key = 0;
@@ -17,7 +18,7 @@ $app->get('/template(/:template_id)', function($template_id = 0) use($app) {
 			$table[$key]['subject'] = $template->subject;
 			$table[$key]['year'] = $template->year;
 			$table[$key]['month'] = $template->month;
-			$table[$key]['paper'] = '<td><a href='.$app->urlFor('template').'/'.$template->id.'>'.$template->paper.'</td>';
+			$table[$key]['paper'] = '<td><a href='.$app->urlFor('template').'?id='.$template->id.'>'.$template->paper.'</td>';
 			$key += 1;
 		}
 		$columns = array_keys($table[0]);
