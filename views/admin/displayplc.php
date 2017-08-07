@@ -22,17 +22,14 @@
 		
 		function isHot(line){
 			return (Number(ratings[line]) > 3);
-		};
-		
-		function setHot(line){
+        }
+        function setHot(line){
 			if (!isHot(line)) {ratings[line] +=4;}
-		};
-		
-		function clearHot(line){
+        }
+        function clearHot(line){
 			if (isHot(line)) {ratings[line] -=4;}
-		};
-
-		var request = null;
+        }
+        var request = null;
 		
 		function updatePlcRecord(){
 			ratingsContent = String(ratings).replace(/,/g,"");
@@ -46,15 +43,14 @@
 //					alert("Success");
 				},
 			});
-		};
-	
-		// Colour the initial tree
+        }
+        // Colour the initial tree
 		$("i.fa-fire").each(function(index) {
 			var line = $(this).attr('line');
 			if (isHot(line)) {
 				$(this).css("color","red");
-			};
-			$(this).attr("up", lookUp[line]['parent']);
+            }
+            $(this).attr("up", lookUp[line]['parent']);
 		});
 
 		$("i.fa-stop").each(function(index) {
@@ -62,8 +58,8 @@
 			ragvalue = ratings[id];
 			if (isHot(id)) {
 				ragvalue -=4;
-			};
-			if (ragvalue == 0) {
+            }
+            if (ragvalue == 0) {
 				$(this).css("color","lightgray");
 			} else if (ragvalue == 1){
 				$(this).css("color","red");
@@ -71,8 +67,8 @@
 				$(this).css("color","orange");
 			} else {
 				$(this).css("color","green");
-			};
-		});
+            }
+        });
 
 		$("[togg]").on('click',function(){
 			var id = $(this).attr('line');
@@ -86,8 +82,8 @@
 				ragvalue = ratings[id];
 				if (isHot(id)) {
 					ragvalue -=4;
-				};
-				if (ragvalue == 0) {
+                }
+                if (ragvalue == 0) {
 					$(this).css("color","red");
 					ratings[id] +=1;
 				} else if (ragvalue == 1){
@@ -99,8 +95,8 @@
 				} else {
 					$(this).css("color","red");
 					ratings[id] -=2;
-				};
-				updatePlcRecord();
+                }
+                updatePlcRecord();
 			},
 			dblclick: function() {
 				var id = $(this).attr('line');
@@ -108,8 +104,8 @@
 					ratings[id] = 7;
 				} else {
 					ratings[id] = 3;
-				};
-				$(this).css("color","green");
+                }
+                $(this).css("color","green");
 				updatePlcRecord();
 			}
 		});
@@ -118,8 +114,8 @@
 			var line = $(this).attr('line');
 			if (lookUp[line]['nodetype'] != 'c'){
 				return;
-			};
-			if (isHot(line)) {
+            }
+            if (isHot(line)) {
 				$(this).css("color","lightgray");
 				clearHot(line);
 				var topic = lookUp[line]['parent'];
@@ -131,9 +127,11 @@
 						allClear = false;
 					}
 					i += 1;
-					if (i == maxIndexPlusOne) { break;};
-				};
-				if (allClear) {
+                    if (i == maxIndexPlusOne) {
+                        break;
+                    }
+                }
+                if (allClear) {
 					clearHot(topic);
 					$("#hot"+topic).css("color","lightgray");
 					allClear = true;
@@ -143,9 +141,11 @@
 							allClear = false;
 						}
 						i += 1;
-						if (i == maxIndexPlusOne) { break;};
-					};
-					if (allClear){
+                        if (i == maxIndexPlusOne) {
+                            break;
+                        }
+                    }
+                    if (allClear){
 						clearHot(unit);
 						$("#hot"+unit).css("color","lightgray");
 						}
@@ -159,8 +159,8 @@
 				var unit = lookUp[topic]['parent'];
 				setHot(unit);
 				$("#hot"+unit).css("color","red");
-			};
-			updatePlcRecord();
+            }
+            updatePlcRecord();
 		});
 	
 	});

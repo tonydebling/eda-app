@@ -1,5 +1,6 @@
 <?php
 
+use Target\Database\Staffmember;
 use Target\Database\Checkpoint;
 use Target\Database\Testpoint;
 use Target\Database\Testresult;
@@ -44,6 +45,38 @@ $app->post('/uploadfile', function() use($app) {
 			'table' => $table
 		]);
 	};
+
+    // STAFFMEMBERS
+    if ($fileType == "staffmembers") {
+        $fullFileName = $_FILES["fileToUpload"]["tmp_name"];
+        $table = csv_to_array($fullFileName);
+        // Add a school_id column
+        foreach ($table as $key => $csm){
+            $table[$key]['school_id'] = $user->school_id;
+        }
+
+        // Check that table contains correct columns
+        $columns = array_keys($table[0]);
+        $match = array_diff(['title','first_name'], $columns);
+        if ($match == []) {
+            // Replace staffmember records in database
+            $staffmember = new Staffmember;
+            $deletedrows = $staffmember
+                ->where('school_id', $user->school_id)
+                ->delete();
+            $staffmember->insert($table);
+            $heading = 'Staff data updated';
+        } else {
+            $heading = 'Database not updated, staff table has incorrect headings';
+        };
+
+        $app->render('admin/displayfile.php', [
+            'heading' => $heading,
+            'columns' => $columns,
+            'table' => $table
+        ]);
+    };
+
 	// SUBJECTS
 	if ($fileType == "subjects") {
 		$fullFileName = $_FILES["fileToUpload"]["tmp_name"];

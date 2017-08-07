@@ -9,6 +9,7 @@ class Classe extends Eloquent{
 	protected $fillable = [
 		'school_id',
 		'school_classe_id',
+        'teacher_tricode',
 		'year_group',
 		'schoolsubject_id',
 		'course',

@@ -15,6 +15,7 @@ $app->get('/login', $guest(), function() use($app) {
 			$app->render('auth/login.php', [
 				'school_id' => $school->id,
 				'name' => $school->name,
+				'school_domain' => $school->domain,
 				'errors' => [],
 				]);
 		} else {
@@ -34,6 +35,9 @@ $app->post('/login', $guest(), function() use($app) {
 
 	$identifier = $request->post('identifier');
 	$password = $request->post('password');
+	$school_id = $request->post('school_id');
+	$name = $request->post('name');
+	$school_domain = $request->post('school_domain');
 
 	$v = $app->validation;
 	
@@ -47,11 +51,11 @@ $app->post('/login', $guest(), function() use($app) {
 			->where('username', $identifier)
 			->orWhere('email', $identifier)
 			->first();
-			
+	
 		if ($user && $app->hash->passwordCheck($password, $user->password)){
 			$_SESSION[$app->config->get('auth.session')] = $user->id;
 			$app->flash('global','You are now signed in');
-			$app->redirect($app->urlFor('user.home', ['user_id' => $user->id]));
+			$app->redirect($app->urlFor('user.home')."?id=".$user->id);
 		} else {
 			$app->flash('global','Could not log you in!');
 			$app->response->redirect($app->urlFor('login'));
@@ -59,6 +63,9 @@ $app->post('/login', $guest(), function() use($app) {
 	}
 	
 	$app->render('auth/login.php', [
+		'school_id' => $school_id,
+		'name' => $name,
+		'school_domain' => $school_domain,
 		'errors' => $v->errors(),
 		'request' => $request,
 	]);	

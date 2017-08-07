@@ -25,10 +25,10 @@
 	</div>
 	{% endverbatim %}
 	<script>
-	{% include 'database/browseApp.js' %}
+	{% include; 'database/browseApp.js' %}
 	</script>
 	<script>
-	{% include 'database/browseCtrl.js' %}
+	{% include; 'database/browseCtrl.js' %}
 	</script>
 
 {% endblock %}

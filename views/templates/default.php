@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Website | {% block title %} {% endblock %}</title>
-		<link rel="icon" type="image/x-icon" href="images/favicon.ico"></link>
+		<link rel="icon" type="/image/x-icon" href="images/favicon.ico"></link>
 		<script src="https://use.fontawesome.com/3ea26fd8d9.js"></script>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
@@ -47,7 +47,7 @@
 			</div>
 
 			<div class="w3-container w3-col s3">
-			<h2> <img src="images/askeddy-green-disc.PNG" width=10% height=10%></img>
+			<h2> <img src="images/askeddy-green-disc.PNG" width=12% height=12%></img>
 			<SPACER TYPE=HORIZONTAL SIZE=50>AskEddy.co.uk</h2>
 			</div>
 

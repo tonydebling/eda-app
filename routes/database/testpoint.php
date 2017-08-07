@@ -39,6 +39,7 @@ $app->get('/testpoint', function() use($app) {
 			$app->notFound();
 			die();
 		}
+
 		$subject = $here->schoolsubject->name;
 		$heading = 'Test Results '.$subject;
 		
@@ -83,6 +84,8 @@ $app->get('/testpoint', function() use($app) {
 				$row[$i[0]] = $mp->marks;
 			};
 		};
+
+		
 		$table[$key] = $row;
 		$key +=1;
 		
@@ -127,6 +130,7 @@ $app->get('/testpoint', function() use($app) {
 				$key += 1;
 			}
 		}
+
 		$columns = array_keys($table[0]);
 		$app->render('admin/displayfile.php', [
 			'heading' => $heading,

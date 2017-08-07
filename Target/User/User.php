@@ -17,7 +17,9 @@ class User extends Eloquent{
 		'date_of_birth',
 		'school_id',
 		'is_student',
-		'student_id',
+        'student_id',
+        'is_staffmember',
+        'staffmember_id',
 		'active',
 		'active_hash',
 		'recover_hash',
@@ -58,8 +60,14 @@ class User extends Eloquent{
 	public function isStudent()
 	{
 		return $this->is_student;
-	}			
-	public function permissions()
+	}
+
+    public function isStaffmember()
+    {
+        return $this->is_staffmember;
+    }
+
+    public function permissions()
 	{
 		return $this->hasOne('Target\User\UserPermission', 'user_id');
 	}

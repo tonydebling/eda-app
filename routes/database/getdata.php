@@ -17,8 +17,8 @@ $app->get('/getdata', function() use($app) {
 
 })->name('getdata');
 
+
 $app->get('/getdata/schools', function() use($app) {
-	
 	$sstr = $app->request()->params('sstr');
 	$school = new School;
 	$table = [];
@@ -31,5 +31,4 @@ $app->get('/getdata/schools', function() use($app) {
 	$jtable = json_encode($table);
 	echo $jtable;
 	exit();
-
 })->name('getdata.schools');

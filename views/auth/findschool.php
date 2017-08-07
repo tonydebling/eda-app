@@ -8,7 +8,7 @@ $(document).ready(function(){
 
 	var schoolTable = [];
 	var schoolSelector ="";
-	var returnUrl ="{{ returnUrl }}"
+	var returnUrl ="{{ returnUrl }}";
 
 	$(document).ajaxError(function(event, jqXHR, settings, thrownError){
 		alert(thrownError);
@@ -36,7 +36,7 @@ $(document).ready(function(){
 			// hide list of schools
 			$("#schlist").hide();
 			$("li").remove("");
-		};    
+        }
     });
 });
 
