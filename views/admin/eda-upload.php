@@ -2,18 +2,20 @@
 
 {% block title %}Edanalytics upload{% endblock %}
 {% block content %}
+    <p></p>
 	<form action="{{ urlFor('eda-upload.post')}}" method="post" enctype="multipart/form-data" autocomplete="off">
 		<div>
-			<label for"fileType">File type</label>
+			<label>File type</label>
 			<select name="fileType">
 				<option value="schools">Schools</option>
+                <option value="resources">Resources</option>
 				<option value="template">Template</option>
 				<option value="checklist">Checklist</option>
 			</select>
 		</div>
 		<div>
             <p>
-			<label>Select image to upload:</label>
+			<label>Select file:</label>
 			<input type="file" name="fileToUpload" id="fileToUpload">
 			</p>
 		</div>

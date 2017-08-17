@@ -21,6 +21,7 @@ require INC_ROOT . '/app/routes/database/plc.php';
 require INC_ROOT . '/app/routes/database/updateplcrecord.php';
 require INC_ROOT . '/app/routes/database/getdata.php';
 require INC_ROOT . '/app/routes/database/browse.php';
+require INC_ROOT . '/app/routes/database/uploadresources.php';
 
 require INC_ROOT . '/app/routes/admin/example.php';
 require INC_ROOT . '/app/routes/admin/uploadfile.php';

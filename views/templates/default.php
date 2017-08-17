@@ -24,12 +24,14 @@
 						<i class="fa fa-id-card" style="padding-right:20px;"></i>Account</a>
 				{% if auth.isAdmin() %}
 					<a href="{{ urlFor('admin.x') }}" class="w3-bar-item w3-button w3-large">
-						<i class="fa fa-eye" style="padding-right:20px;"></i>Admin</a>
+                        <i class="fa fa-eye" style="padding-right:20px;"></i>Admin</a>
 					<a href="{{ urlFor('user.all') }}" class="w3-bar-item w3-button w3-large">
 						<i class="fa fa-user-circle" style="padding-right:20px;"></i>All users</a>
 					<a href="{{ urlFor('uploadfile') }}" class="w3-bar-item w3-button w3-large">
 						<i class="fa fa-cloud-upload" style="padding-right:20px;"></i>Upload file</a>
-					<a href="{{ urlFor('template') }}" class="w3-bar-item w3-button w3-large">
+                    <a href="{{ urlFor('browse') }}" class="w3-bar-item w3-button w3-large">
+                        <i class="fa fa-book" style="padding-right:20px;"></i>Resources</a>
+                    <a href="{{ urlFor('template') }}" class="w3-bar-item w3-button w3-large">
 						<i class="fa fa-snowflake-o" style="padding-right:20px;"></i>Templates</a>
 				{% endif %}
 					  <a href="{{ urlFor('logout') }}" class="w3-bar-item w3-button w3-large">
@@ -54,9 +56,7 @@
 			<p></p>
 		</header>
 		{% include 'templates/partials/messages.php' %}
-		{#
-		{% include 'templates/partials/navigation.php' %}
-		#}
+        <p></p>
 		
 		
 		{% block content %} {% endblock %}

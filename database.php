@@ -12,8 +12,8 @@ $capsule->addConnection([
 	'charset' => $app->config->get('db.charset'),
 	'collation' => $app->config->get('db.collation'),
 	'prefix' => $app->config->get('db.prefix'),
-]);
+    ]);
 
+$capsule->setAsGlobal();  //this is important
 $capsule->bootEloquent();
-
 

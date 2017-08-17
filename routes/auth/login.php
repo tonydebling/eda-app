@@ -1,3 +1,4 @@
+
 <?php
 
 $app->get('/login', $guest(), function() use($app) {
@@ -6,7 +7,7 @@ $app->get('/login', $guest(), function() use($app) {
 	if ($school_id == NULL){
 		$base = $app->config->get('app.url');
 		$returnUrl = $base.$app->urlFor('login');
-		$app->render('auth/findschool.php', [
+		$app->render('database/findschool.php', [
 			'returnUrl' => $returnUrl,
 		]);
 	} else {
@@ -22,7 +23,9 @@ $app->get('/login', $guest(), function() use($app) {
 			$app->flash('global', 'School not found with this id');
 			$base = $app->config->get('app.url');
 			$returnUrl = $base.$app->urlFor('login');
-			$app->render('auth/findschool.php');
+			$app->render('database/findschool.php',[
+                'returnUrl' => $returnUrl,
+		        ]);
 		};
 		die();
 	}	

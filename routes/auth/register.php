@@ -18,7 +18,7 @@ $app->get('/register', $guest(), function() use($app) {
 		echo('School id parameter:'); echo($school_id);
 		$school = $app->school->where('id',$school_id)->first();
 		if ($school){
-			$app->render('auth/register.php', [
+			$app->render('database/register.php', [
 				'school_id' => $school->id,
 				'school_domain' => $school->domain,
 				'name' => $school->name,
@@ -29,7 +29,7 @@ $app->get('/register', $guest(), function() use($app) {
 			$app->flash('global', 'School not found with this id');
 			$base = $app->config->get('app.url');
 			$returnUrl = $base.$app->urlFor('register');
-			$app->render('auth/findschool.php', [
+			$app->render('database/findschool.php', [
                 'returnUrl' => $returnUrl,
                 ]);
 		};

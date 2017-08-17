@@ -1,5 +1,6 @@
 <?php
 
+use Target\Database\Resource;
 use Target\Database\Template;
 use Target\Database\Checklist;
 
@@ -11,12 +12,13 @@ $app->post('/eda-upload', function() use($app) {
 
 	$request = $app->request;
 	$fileType = $request->post('fileType');
+    $user = $app->user->where('id',$_SESSION[$app->config->get('auth.session')])->first();
 
 	if ($fileType == "schools") {
 		$fullFileName = $_FILES["fileToUpload"]["tmp_name"];
 		$table = csv_to_array($fullFileName);
 		$columns = array_keys($table[0]);
-		$deletedrows = $app->school->truncate();
+//		$deletedrows = $app->school->truncate();
 		$student = $app->school->insert($table);
 		$heading = "School table updated";
 		$app->render('admin/displayfile.php', [
@@ -25,6 +27,23 @@ $app->post('/eda-upload', function() use($app) {
 			'table' => $table
 		]);
 	};
+
+    if ($fileType == "resources") {
+        $fullFileName = $_FILES["fileToUpload"]["tmp_name"];
+        $table = csv_to_array($fullFileName);
+        $columns = array_keys($table[0]);
+        foreach ($table as $key => $csm) {
+            $table[$key]['uploader_id'] = $user->id;
+        }
+        $resource = new Resource;
+        $resources = $resource->insert($table);
+        $heading = "Resource listing updated";
+        $app->render('admin/displayfile.php', [
+            'heading' => $heading,
+            'columns' => $columns,
+            'table' => $table
+            ]);
+    };
 
 	if (($fileType == "template") or ($fileType == "checklist")) {
 		$fullFileName = $_FILES["fileToUpload"]["tmp_name"];
