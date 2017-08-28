@@ -36,7 +36,7 @@ $app->get('/getdata/schools', function() use($app) {
 
 $app->get('/getdata/resources', function() use($app) {
     $sstr = $app->request()->params('sstr');
-    $sql = "select * from resources where MATCH (title,keywords) AGAINST (".$sstr." IN BOOLEAN MODE) AND subject_id = 397 ";
+    $sql = "select * from resources where MATCH (title,keywords) AGAINST (".$sstr." IN BOOLEAN MODE)";
     $table = DB::select($sql);
     $jtable = json_encode($table);
     echo $jtable;

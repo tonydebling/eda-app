@@ -23,13 +23,14 @@
                 var url = 'getdata/resources?sstr="'+searchStringEncoded+'"';
                 $.getJSON(url, function(data){
                     data.forEach(function(resource){
-                        listElement = '<li id="'+resource['id'] + '" resourceUrl="' + resource['url'] +'">'+resource['title']+'</li>';
-                        alert(listElement);
+                        listElement = '<li id="'+resource['id'] + '" resourceUrl="' + resource['url'] +'">'
+                            +'<i class="fa fa-play"></i>&nbsp;'
+                            +resource['title']
+                            +'</li>';
                         $("#resourcelist").append(listElement);
                     });
                     $("li").on('click',function(){
                         resourceUrl = $(this).attr('resourceUrl');
-                        alert(resourceUrl);
                         window.open("http://"+resourceUrl);
                     });
                 });
@@ -39,10 +40,6 @@
                 $("#resourcelist").hide();
                 $("li").remove("");
             }
-        });
-
-        $("li").on('click',function(event){
-            alert($(this).attr('url'));
         });
 
         //form Submit action
@@ -57,12 +54,11 @@
                 contentType: false,
                 processData: false,
                 enctype: 'multipart/form-data',
-                processData: false,
                 success: function (response) {
                     alert(response);
                 }
             });
-            return false;
+            return false; // Looks like this is not needed
         });
 
     });
