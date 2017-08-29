@@ -18,7 +18,7 @@ $app->get('/register', $guest(), function() use($app) {
 		echo('School id parameter:'); echo($school_id);
 		$school = $app->school->where('id',$school_id)->first();
 		if ($school){
-			$app->render('database/register.php', [
+			$app->render('auth/register.php', [
 				'school_id' => $school->id,
 				'school_domain' => $school->domain,
 				'name' => $school->name,
