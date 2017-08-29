@@ -10,7 +10,7 @@ $app->get('/register', $guest(), function() use($app) {
 	if ($school_id == NULL){
 		$base = $app->config->get('app.url');
 		$returnUrl = $base.$app->urlFor('register');
-		$app->render('auth/findschool.php', [
+		$app->render('database/findschool.php', [
 			'returnUrl' => $returnUrl,
 		]);
 	} else {
