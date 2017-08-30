@@ -15,7 +15,7 @@ $app->get('/register', $guest(), function() use($app) {
 		]);
 	} else {
 		// School id provided as URL argument
-		echo('School id parameter:'); echo($school_id);
+		// echo('School id parameter:'); echo($school_id);
 		$school = $app->school->where('id',$school_id)->first();
 		if ($school){
 			$app->render('auth/register.php', [
