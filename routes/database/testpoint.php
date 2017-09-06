@@ -111,7 +111,9 @@ $app->get('/testpoint', function() use($app) {
 				foreach($xml->testbody->mp as $mp){
 					$i = array((string) $mp->q);
 					if (isset($marks[$k])){
-						$total = $total + $marks[$k];
+					    if (is_numeric($marks[$k])){
+                            $total = $total + $marks[$k];
+                        }
 						$row[$i[0]] = $marks[$k];
 						if ($marks[$k] == $mp->marks){
 							$row[$i[0]] = '<td class ="w3-light-green">'.$marks[$k].'</td>';
