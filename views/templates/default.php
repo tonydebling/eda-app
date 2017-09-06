@@ -12,7 +12,7 @@
 	<body class="w3-container" >
 		<header class="w3-row w3-orange">
 		
-			<div class="w3-container w3-orange w3-col s9">
+			<div class="w3-container w3-orange w3-col l8">
 			{% if auth %}
 				<h2>
 				<div class="w3-dropdown-hover w3-orange"> 
@@ -48,7 +48,7 @@
 			
 			</div>
 
-			<div class="w3-container w3-col s3">
+			<div class="w3-container w3-col l4">
 			<h2> <img src="images/askeddy-green-disc.PNG" width=12% height=12%></img>
 			<SPACER TYPE=HORIZONTAL SIZE=50>AskEddy.co.uk</h2>
 			</div>
