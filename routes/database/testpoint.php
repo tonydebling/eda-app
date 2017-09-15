@@ -23,8 +23,8 @@ $app->get('/testpoint', function() use($app) {
 		$testpoints = $testpoints->sortBy('schoolsubject_id');
 		$table = $testpoints->toArray();
 
-		$columns = array_keys($table[0]);
-		$app->render('admin/displayfile.php', [
+        $columns = array_keys($table[0]);
+		$app->render('admin/displaydatatable.php', [
 			'heading' => "Testpoints",
 			'columns' => $columns,
 			'table' => $table
@@ -32,7 +32,6 @@ $app->get('/testpoint', function() use($app) {
 	}
 	// If testpoint_id is specified then list the classes, students and results
 	else {
-
 		$testpoint = new Testpoint;
 		$here = $testpoint->find($testpoint_id);
 		if (!$here) {
@@ -108,25 +107,25 @@ $app->get('/testpoint', function() use($app) {
 				$marks = explode(',',$res['marks']);
 				$k = 0;
 				$total = 0;
-				foreach($xml->testbody->mp as $mp){
-					$i = array((string) $mp->q);
-					if (isset($marks[$k])){
-					    if (is_numeric($marks[$k])){
+                foreach($xml->testbody->mp as $mp){
+                    $i = array((string) $mp->q);
+                    if (isset($marks[$k])){
+                        if (is_numeric($marks[$k])){
                             $total = $total + $marks[$k];
                         }
-						$row[$i[0]] = $marks[$k];
-						if ($marks[$k] == $mp->marks){
-							$row[$i[0]] = '<td class ="w3-light-green">'.$marks[$k].'</td>';
-						} elseif ($marks[$k] == 0){
-							$row[$i[0]] = '<td class ="w3-pale-red">'.$marks[$k].'</td>';
-						} else{
-							$row[$i[0]] = '<td class ="w3-amber">'.$marks[$k].'</td>';
-						};
-					} else {
-						$row[$i[0]] = '<td class ="w3-pale-red"> </td>';
-					};
-					$k += 1;
-				};
+                        $row[$i[0]] = $marks[$k];
+                        if ($marks[$k] == $mp->marks){
+                            $row[$i[0]] = '<td class ="w3-light-green">'.$marks[$k].'</td>';
+                        } elseif ($marks[$k] == 0){
+                            $row[$i[0]] = '<td class ="w3-pale-red">'.$marks[$k].'</td>';
+                        } else{
+                            $row[$i[0]] = '<td class ="w3-amber">'.$marks[$k].'</td>';
+                        };
+                    } else {
+                        $row[$i[0]] = '<td class ="w3-pale-red"> </td>';
+                    };
+                    $k += 1;
+                };
 				$row['total'] = $total;
 				$table[$key] = $row;
 				$key += 1;
@@ -134,7 +133,7 @@ $app->get('/testpoint', function() use($app) {
 		}
 
 		$columns = array_keys($table[0]);
-		$app->render('admin/displayfile.php', [
+		$app->render('admin/displaydatatable.php', [
 			'heading' => $heading,
 			'columns' => $columns,
 			'table' => $table

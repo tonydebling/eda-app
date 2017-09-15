@@ -7,9 +7,11 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 class Schoolsubject extends Eloquent{
 
 	protected $fillable = [
-		'school_id',
 		'name',
 		'tricode',
+        'Qan',
+        'checklist_id',
+        'school_id',
 		];
 
     public $timestamps = false;
