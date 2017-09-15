@@ -11,7 +11,8 @@ use Target\Database\Plc;
 $app->get('/plctable', function() use($app) {
 
 	$user = $app->user->where('id',$_SESSION[$app->config->get('auth.session')])->first();
-//	$school_id = $user->school_id;
+	$school_id = $user->school_id;
+	echo 'We got here';
 	$subject_id = $app->request()->params('subjid');
     if (!$subject_id) {
         $app->notFound();
