@@ -33,7 +33,6 @@ require INC_ROOT . '/vendor/autoload.php';
 $app = new Slim([
 	'mode' => trim(file_get_contents(INC_ROOT . '/app/mode.php')),
 	'view' => new Twig(),
-	'debug' => true,
 	'templates.path' => INC_ROOT . '/app/views'
 ]);
 
