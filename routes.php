@@ -19,6 +19,7 @@ require INC_ROOT . '/app/routes/database/testpoint.php';
 require INC_ROOT . '/app/routes/database/testresult.php';
 require INC_ROOT . '/app/routes/database/plc.php';
 require INC_ROOT . '/app/routes/database/plctable.php';
+require INC_ROOT . '/app/routes/database/plctablex.php';
 require INC_ROOT . '/app/routes/database/updateplcrecord.php';
 require INC_ROOT . '/app/routes/database/getdata.php';
 require INC_ROOT . '/app/routes/database/browse.php';

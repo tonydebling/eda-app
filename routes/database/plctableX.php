@@ -8,7 +8,7 @@ use Target\Database\Checklist;
 use Target\Database\Plc;
 
 
-$app->get('/plctable', function() use($app) {
+$app->get('/plctablex', function() use($app) {
 
 	$user = $app->user->where('id',$_SESSION[$app->config->get('auth.session')])->first();
 	$school_id = $user->school_id;
@@ -20,14 +20,30 @@ $app->get('/plctable', function() use($app) {
     }
     $yrgp = $app->request()->params('yrgp');
     if ($yrgp == NULL){
-        $yrgp = 11;
-    }
+        $yrgp = 11;}
     $schoolsubject = new Schoolsubject;
     $subject = $schoolsubject->find($subject_id);
     if (!$subject) {
         $app->notFound();
         die();
         }
+    $classe = new Classe;
+    $classes = $classe
+        ->where('schoolsubject_id', $subject_id)
+        ->where('year_group',$yrgp)
+        ->get();
+    $sclasse = new Student_Classe;
+    $student = new Student;
+    $students = $student
+        ->where('school_id', $user->school_id)
+        ->where('year_group',$yrgp)
+        ->get();
+
+    $plc = new Plc;
+    $plcTable = $plc
+        ->where('schoolsubject_id', $subject_id)
+        ->get();
+
     $checklists = new Checklist;
     $checklist = $checklists->where('id', $subject->checklist_id)->first();
     if (!$checklist) {
@@ -36,42 +52,7 @@ $app->get('/plctable', function() use($app) {
     }
     $xml = simplexml_load_file($checklist->filename);
     $checklistLookUpTable = buildLookUpTable($xml);
-    $jsonLookUpTable = json_encode(buildJsLookUpTable($xml));
-
-    $plcTable = buildPlcTable($subject_id, $yrgp, $user->school_id);
-    $jsonPlcTable = json_encode($plcTable);
-
-    $app->render('admin/displayplctable.php',[
-        'subject_id' => $subject_id,
-        'subject_name' => $subject->name,
-        'checklist_id' => $subject->checklist_id,
-        'jsonLookUpTable' => $jsonLookUpTable,
-        'checklist' => $checklistLookUpTable,
-        'jsonPlcTable' => $jsonPlcTable,
-        'plcTable' => $plcTable,
-    ]);
-
-	})->name('plctable');
-
-
-function buildPlcTable($schoolsubject_id, $yrgp, $school_id){
-
-    $classe = new Classe;
-    $classes = $classe
-        ->where('schoolsubject_id', $schoolsubject_id)
-        ->where('year_group',$yrgp)
-        ->get();
-    $sclasse = new Student_Classe;
-    $student = new Student;
-    $students = $student
-        ->where('school_id', $school_id)
-        ->where('year_group',$yrgp)
-        ->get();
-    $plc = new Plc;
-    $plcTable = $plc
-        ->where('schoolsubject_id', $schoolsubject_id)
-        ->get();
-
+    $blank = array_fill(0,count($checklistLookUpTable),"0");
     $table = [];
     $index = 0;
     foreach ($classes as $class){
@@ -83,21 +64,37 @@ function buildPlcTable($schoolsubject_id, $yrgp, $school_id){
             $row['index'] = $index;
             $row['class'] = $s->school_classe_id;
             $stu = $students->find($s->student_id);
-            $row['name'] = $stu->last_name.", ".$stu->first_name;
+            $row['student name'] = $stu->last_name.", ".$stu->first_name;
             $splc = $plcTable
                 ->where('student_id',$s->student_id)
                 ->first();
             if(!$splc){
-                $row['plc_id'] = 0;
-                $row['ratings'] = "";
-            } else{
-                $row['plc_id'] = $splc->id;
-                $row['ratings'] = $splc->ratings;
-            }
+                // make a new plc record
+                $splc = $plc->insert([
+                    'student_id' => $s->student_id,
+                    'checklist_id' => $subject->checklist_id,
+                    'schoolsubject_id' => $subject_id,
+                    'ratings' => "",
 
+                ]);
+                $splc = $plc
+                    ->where('student_id',$s->student_id)
+                    ->where('schoolsubject_id', $subject_id)
+                    ->first();
+            }
+            $row['plc'] = $splc->id;
+            $row['ratings'] = $splc->ratings;
             $table[$index] = $row;
             $index += 1;
-        }
-    }
-    return $table;
-};
+			}
+		}
+
+    $heading = 'Learning Checklist: '.$subject->name;
+		$columns = array_keys($table[0]);
+		$app->render('admin/displaydatatable.php', [
+			'heading' => $heading,
+			'columns' => $columns,
+			'table' => $table
+		]);
+
+	})->name('plctablex');

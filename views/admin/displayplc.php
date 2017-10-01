@@ -33,7 +33,7 @@
 		
 		function updatePlcRecord(){
 			ratingsContent = String(ratings).replace(/,/g,"");
-			var updateUrl = "updateplcrecord?id=".plc_id;
+			var updateUrl = "updateplcrecord?id="+plc_id;
 			data = 'plc_id='+plc_id+'&ratings='+ratingsContent;
 			$.ajax({
 				url: updateUrl,
