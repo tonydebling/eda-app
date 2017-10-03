@@ -73,6 +73,7 @@ $app->get('/plc', function() use($app) {
 							'text' => (string)$check->text,
 							'rank' => $check->rank,
 							'parent' => $topicLine,
+                            'search' => $check->search,
 						];
 						$line += 1;
 					};

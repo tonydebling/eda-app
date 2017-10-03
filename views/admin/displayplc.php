@@ -167,6 +167,7 @@
 	
 	</script>
 
+
 	<div class="w3-responsive">
 
 	{% for line in checklist %}
@@ -201,6 +202,6 @@
 		{% endif %}
 	{% endfor %}
 	</div>
-	
+
 	<p> </p>
 {% endblock %}
