@@ -27,6 +27,7 @@ $app->get('/plc', function() use($app) {
 		$plc->update(['ratings' => implode("",$blank),]);
 	};
 	$jsonLookUpTable = json_encode(buildJsLookUpTable($xml));
+//    $jsonLookUpTable = json_encode($checklistLookUpTable);
 	$app->render('admin/displayplc.php', [
 		'plc_id' => $plc_id,
 		'checklist' => $checklistLookUpTable,
@@ -44,35 +45,35 @@ $app->get('/plc', function() use($app) {
 		$lookUpTable[0] = [
 			'id' => 0,
 			'nodetype' => 'r',
+            'depth' => 0,
 			'text' => (string)$xml->subject,
-			'parent' => -1,
+            'rank' => 0,
 		];
 		$line = 1;
 		foreach ($xml->units->children() as $unit){
 			$lookUpTable[$line] = [
 				'id' => $line,
 				'nodetype' => 'u',
+                'depth' => 1,
 				'text' => (string)$unit->name,
-				'parent' => 0,
+                'rank' => 0,
 			];
-			$unitLine = $line;
 			$line += 1;
 			foreach ($unit->topics->topic as $topic){
 				$lookUpTable[$line] = [
 					'id' => $line,
 					'nodetype' => 't',
+                    'depth' => 2,
 					'text' => (string)$topic->name,
-					'parent' => $unitLine,					
 				];
-				$topicLine = $line;
 				$line += 1;
 				foreach ($topic->checks->check as $check){
 						$lookUpTable[$line] = [
 							'id' => $line,
 							'nodetype' => 'c',
+                            'depth' => 3,
 							'text' => (string)$check->text,
 							'rank' => $check->rank,
-							'parent' => $topicLine,
 						];
 						$line += 1;
 					};
@@ -81,7 +82,78 @@ $app->get('/plc', function() use($app) {
 		return $lookUpTable;
 	};
 
-	function buildJsLookUpTable($xml){
+
+function buildJsLookUpTable($xml){
+
+    $lookUpTable = [];
+    $lookUpTable[0] = [
+        'id' => 0,
+        'nodetype' => 'r',
+        'depth' => 0,
+        'rank' => 0,
+        'parent' => -1,
+        'child' => 1,
+        'next' => -1,
+    ];
+    $line = 1;
+    $unitLine = -1;
+    foreach ($xml->units->children() as $unit){
+        $lookUpTable[$line] = [
+            'id' => $line,
+            'nodetype' => 'u',
+            'depth' => 1,
+            'rank' => 0,
+            'parent' => 0,
+            'child' => $line + 1,
+            'previous' => $unitLine,
+            'next' => -1,
+        ];
+        if ($lookUpTable[$line]['previous'] <> -1){
+            $lookUpTable[$lookUpTable[$line]['previous']]['next'] = $line;
+        }
+        $unitLine = $line;
+        $line += 1;
+        $topicLine = -1;
+        foreach ($unit->topics->topic as $topic){
+            $lookUpTable[$line] = [
+                'id' => $line,
+                'nodetype' => 't',
+                'depth' => 2,
+                'parent' => $unitLine,
+                'child' => $line + 1,
+                'previous' => $topicLine,
+                'next' => -1,
+            ];
+            if ($lookUpTable[$line]['previous'] <> -1){
+                $lookUpTable[$lookUpTable[$line]['previous']]['next'] = $line;
+            }
+            $topicLine = $line;
+            $line += 1;
+            $checkLine = -1;
+            foreach ($topic->checks->check as $check){
+                $lookUpTable[$line] = [
+                    'id' => $line,
+                    'nodetype' => 'c',
+                    'depth' => 3,
+                    'rank' => $check->rank,
+                    'search' => (string)$check->search,
+                    'parent' => $topicLine,
+                    'child' => -1,
+                    'previous' => $checkLine,
+                    'next' => -1,
+                ];
+                if ($lookUpTable[$line]['previous'] <> -1){
+                    $lookUpTable[$lookUpTable[$line]['previous']]['next'] = $line;
+                }
+                $checkLine = $line;
+                $line += 1;
+            };
+        };
+    };
+    return $lookUpTable;
+};
+
+	function buildJsLookUpTableX($xml){
 
 		$jsLookUpTable = [];
 		$jsLookUpTable[0] = [
@@ -116,7 +188,7 @@ $app->get('/plc', function() use($app) {
 		return $jsLookUpTable;
 	};
 	
-	
+/*
 $app->post('/plc', function() use($app) {
 	
 	$request = $app->request;
@@ -128,3 +200,4 @@ $app->post('/plc', function() use($app) {
 	die();
 	
 })->name('plc.post');
+*/

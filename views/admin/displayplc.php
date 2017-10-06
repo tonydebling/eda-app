@@ -2,6 +2,7 @@
 
 {% block title %}Checklist{% endblock %}
 
+
 {% block content %}
 	<script>
 	$(document).ready(function(){
@@ -44,6 +45,8 @@
 				},
 			});
         }
+
+        $("#desc").hide();
         // Colour the initial tree
 		$("i.fa-fire").each(function(index) {
 			var line = $(this).attr('line');
@@ -52,11 +55,11 @@
             }
             $(this).attr("up", lookUp[line]['parent']);
 		});
-
+        // set up the RAG colors
 		$("i.fa-stop").each(function(index) {
-			var id = $(this).attr('line');
-			ragvalue = ratings[id];
-			if (isHot(id)) {
+			var line = $(this).attr('line');
+			ragvalue = ratings[line];
+			if (isHot(line)) {
 				ragvalue -=4;
             }
             if (ragvalue == 0) {
@@ -69,11 +72,63 @@
 				$(this).css("color","green");
             }
         });
+        // Set up descendants in check lines
+		$("tr.desc").each(function(index){
+            var line = $(this).attr('line');
+            var up = lookUp[line]['parent'];
+            var desc = "";
+            if (up == 0){
+                $(this).css("font-weight", "bold");
+            }
+            while (up != 0) {
+                desc = "d" + up;
+                $(this).addClass(desc);
+                up = lookUp[up]['parent'];
+            };
+        });
+        resetTree(0);
+        $("#resourcelist").hide();
+        $("#display").show();
+
+        function resetTree(line){
+            // if node is not a leaf then ...
+            if (lookUp[line]['child']>0){
+                // if node is hidden then ...
+                if (ratings[line] % 4 != 0){
+                    $('#b'+ line).toggleClass("fa-toggle-down fa-toggle-up");
+                    $(".d" + line).hide();
+                }
+                var node = lookUp[line]['child'];
+                while (node > 0){
+                    resetTree(node);
+                    node = lookUp[node]['next'];
+                }
+            }
+        };
+
+		function showVisibleTree(line){
+            $('#n'+ line).show();
+            // if node is not a leaf, and is visible then ...
+            if ((lookUp[line]['child']>0)&&(ratings[line] % 4 == 0)){
+                var node = lookUp[line]['child'];
+                while (node > 0){
+                    showVisibleTree(node);
+                    node = lookUp[node]['next'];
+                }
+            }
+        };
 
 		$("[togg]").on('click',function(){
-			var id = $(this).attr('line');
-			$('#desc-s'+id).toggle();
-			$('#b'+id).toggleClass("fa-toggle-down fa-toggle-up");
+			var line = $(this).attr('line');
+			if (ratings[line] % 4 == 0) {
+                $(".d" + line).hide();
+                ratings[line] += 1;
+            } else {
+                ratings[line] -= 1;
+                showVisibleTree(line);
+            }
+			$('#b'+ line).toggleClass("fa-toggle-down fa-toggle-up");
+            updatePlcRecord();
 		});
 
 		$("[rag]").on({
@@ -162,45 +217,83 @@
             }
             updatePlcRecord();
 		});
-	
+
+        $(".check-item").on('click',function(){
+            var line = $(this).attr('line');
+            $("#current-item").text($(this).text());
+            $("#current-search").text(lookUp[line]['search']);
+            var searchString = lookUp[line]['search'];
+            searchStringEncoded = encodeURIComponent(searchString);
+            if (searchString.length > 1){
+                // update and display list of resources
+                $("#resourcelist").hide();
+                $("li").remove("");
+                var url = 'getdata/resources?sstr="'+searchStringEncoded+'"';
+                $.getJSON(url, function(data){
+                    data.forEach(function(resource){
+                        listElement = '<li id="'+resource['id'] + '" resourceUrl="' + resource['url'] +'">'
+                            +'<i class="fa fa-play"></i>&nbsp;'
+                            +resource['title']
+                            +'</li>';
+                        $("#resourcelist").append(listElement);
+                    });
+                    $("li").on('click',function(){
+                        resourceUrl = $(this).attr('resourceUrl');
+                        window.open("http://"+resourceUrl);
+                    });
+                });
+                $("#resourcelist").show();
+            } else {
+                // hide list of schools
+                $("#resourcelist").hide();
+                $("li").remove("");
+            }
+        });
 	});
 	
 	</script>
 
-	<div class="w3-responsive">
+<div id="display" class="w3-row">
+    <div class="w3-container w3-col s6 w3-hoverable">
+        <h3>Checklist</h3>
+        <table>
+        {% for line in checklist %}
+        {% if line.nodetype == 'r' %}
 
-	{% for line in checklist %}
-		{% if line.nodetype == 'r' %}
-			<h3> {{line.text}} Checklist</h3>
-			<div><div>
-		{% elseif line.nodetype == 'u'%}
-			</div></div>
-			<div>
-			<i class="fa fa-fire" style="color:lightgray" id="hot{{line.id}}" line={{line.id}} up=0></i>
-			<i class="fa fa-toggle-up" id="b{{line.id}}" togg=true line={{line.id}}> </i>
-			{{ line.text }}<br>
-			</div>
-			<div id="desc-s{{line.id}}">
-			<div>
-		{% elseif line.nodetype == 't' %}
-			</div>
-			<div>
-			<i class="fa fa-fire" style="color:lightgray" id="hot{{line.id}}" line={{line.id}} up=0> </i>
-			&nbsp;&nbsp;&nbsp;&nbsp;
-			<i class="fa fa-toggle-down" id="b{{line.id}}" togg=true line={{line.id}}> </i>
-			{{ line.text }}<br>
-			</div>
-			<div style="display: none" id="desc-s{{line.id}}">
-		{% elseif line.nodetype == 'c' %}
-			<i class="fa fa-fire" style="color:lightgray" id="hot{{line.id}}" line={{line.id}} up=0></i>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<i class="fa fa-stop" id="r{{line.id}}" style="color:lightgray" line={{line.id}} rag=0> </i>
-			{{ line.text }} [{{ line.rank }}]<br>
-		{% else %}
-			Dodgy line type!!!
-		{% endif %}
-	{% endfor %}
-	</div>
-	
-	<p> </p>
+        {% elseif line.nodetype == 'c' %}
+        <tr class="desc" id="n{{line.id}}" line="{{line.id}}">
+            <td><i class="fa fa-fire" style="color:lightgray" id="hot{{line.id}}" line={{line.id}} up=0></i></td>
+            <td></td>
+            <td><i class="fa fa-stop" id="r{{line.id}}" style="color:lightgray" line={{line.id}} rag=0> </i></td>
+            <td class="ask-check check-item" line={{line.id}}>{{ line.text }}</td>
+            <td>{{ line.rank }}</td>
+        </tr>
+
+        {% else %}
+        <tr class="desc" id="n{{line.id}}" line="{{line.id}}">
+            <td><i class="fa fa-fire" style="color:lightgray" id="hot{{line.id}}" line={{line.id}} up=0></i></td>
+            <td><i class="fa fa-toggle-up" id="b{{line.id}}" togg=true line={{line.id}}> </i></td>
+            <td colspan="2">{{ line.text }}</td>
+            <td></td>
+        </tr>
+
+        {% endif %}
+        {% endfor %}
+        </table>
+    </div>
+
+    <div class="w3-container w3-col s6">
+        <h3> Learning Resources</h3>
+        <h4>Checklist Item</h4>
+        <div id="current-item"></div>
+        <h4>Search</h4>
+        <div id="current-search"></div>
+        <h4>Resources</h4>
+
+        <ul class="w3-ul w3-border w3-hoverable" id="resourcelist">
+        </ul>
+    </div>
+</div>
+
+<p> </p>
 {% endblock %}

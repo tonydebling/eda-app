@@ -17,7 +17,7 @@
             searchString = $("#search-text-input").val();
             searchStringEncoded = encodeURIComponent(searchString);
             if (searchString.length > 1){
-                // update and display list of schools
+                // update and display list of resources
                 $("#resourcelist").hide();
                 $("li").remove("");
                 var url = 'getdata/resources?sstr="'+searchStringEncoded+'"';
@@ -66,7 +66,6 @@
 </script>
 
 <style>
-
     .scrollable-menu {
         height: auto;
         max-height:350px;
