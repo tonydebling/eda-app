@@ -18,6 +18,8 @@ require INC_ROOT . '/app/routes/database/template.php';
 require INC_ROOT . '/app/routes/database/testpoint.php';
 require INC_ROOT . '/app/routes/database/testresult.php';
 require INC_ROOT . '/app/routes/database/plc.php';
+require INC_ROOT . '/app/routes/database/hotlists.php';
+require INC_ROOT . '/app/routes/database/gethotlist.php';
 require INC_ROOT . '/app/routes/database/plctable.php';
 
 require INC_ROOT . '/app/routes/database/updateplcrecord.php';
@@ -31,4 +33,3 @@ require INC_ROOT . '/app/routes/admin/eda-upload.php';
 
 require INC_ROOT . '/app/routes/errors/404.php';
 
-require INC_ROOT . '/app/routes/sandbox/sandbox.php';

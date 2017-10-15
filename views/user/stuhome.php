@@ -2,7 +2,7 @@
 
 {% block title %}{{ user.getFullNameOrUsername() }}{% endblock %}
 {% block content %}
-	<h3>Subject Dashboard</h3>
+	<h3>Dashboard</h3>
 	<div class="w3-responsive">
 		<table class="w3-table-all w3-third">
 			<thead>

@@ -153,6 +153,7 @@ function buildJsLookUpTable($xml){
     return $lookUpTable;
 };
 
+/*
 	function buildJsLookUpTableX($xml){
 
 		$jsLookUpTable = [];
@@ -188,7 +189,7 @@ function buildJsLookUpTable($xml){
 		return $jsLookUpTable;
 	};
 	
-/*
+
 $app->post('/plc', function() use($app) {
 	
 	$request = $app->request;

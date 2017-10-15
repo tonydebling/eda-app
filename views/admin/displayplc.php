@@ -58,7 +58,7 @@
         // set up the RAG colors
 		$("i.fa-stop").each(function(index) {
 			var line = $(this).attr('line');
-			ragvalue = ratings[line];
+			var ragvalue = ratings[line];
 			if (isHot(line)) {
 				ragvalue -=4;
             }

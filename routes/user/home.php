@@ -12,6 +12,8 @@ $app->get('/home', function() use($app) {
 	}
 	if ($user->isStudent()) {
 		$student_id = $user->student_id;
+
+
 		$student = $app->student->where('id',$student_id)->first();
 		$classes = $student->classes;
 
