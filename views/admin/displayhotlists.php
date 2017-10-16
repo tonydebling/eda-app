@@ -94,14 +94,14 @@
                     $.getJSON(url, function(data){
                         data.forEach(function(resource){
                             listElement = '<div id="'+resource['id'] + '" resourceUrl="' + resource['url'] +'">'
-                                +'<i class="fa fa-video-camera"></i>&nbsp;'
+                                +'<i class="fa fa-video-camera"'+'" resourceUrl="' + resource['url'] + '"></i>&nbsp;'
                                 +resource['title']
                                 +'</div>';
                             $("#rl"+sub+"x"+chk).slick('slickAdd',listElement);
                         });
 
                         $(".fa-video-camera").on('click',function(){
-                            resourceUrl = $(this).attr('resourceUrl');
+                            var resourceUrl = $(this).attr('resourceUrl');
                             window.open("http://"+resourceUrl);
                         });
                         subjectList[sub]['hotlist'][chk]['loaded'] = true;
