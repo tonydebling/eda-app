@@ -76,6 +76,21 @@
 			}
 		});
 
+		function youTubeId(url){
+		    // will need updating
+		    var youTubeId = url.split('v=')[1];
+		    var index = youTubeId.indexOf("&");
+		    if (index > 0){
+		        youTubeId = youTubeId.substring(0,index);
+            }
+            return youTubeId;
+        }
+
+        function youTubeThumbnail(url){
+		    var thumbnail = "https://img.youtube.com/vi/"+youTubeId(url)+"/sddefault.jpg";
+		    return thumbnail;
+        }
+
         $(".check-item").on('click',function(){
             var sub = $(this).attr('sub');
             var chk = $(this).attr('chk');
@@ -93,9 +108,10 @@
                     var url = 'getdata/resources?sstr="'+searchStringEncoded+'"';
                     $.getJSON(url, function(data){
                         data.forEach(function(resource){
-                            listElement = '<div id="'+resource['id'] + '" resourceUrl="' + resource['url'] +'">'
-                                +'<i class="fa fa-video-camera"'+'" resourceUrl="' + resource['url'] + '"></i>&nbsp;'
-                                +resource['title']
+                            listElement = '<div class="w3-display-container" id="'+resource['id'] + '" resourceUrl="' + resource['url'] +'">'
+                                +'<img class="w3-hover-opacity ask-slider-image"'+'" src="' + youTubeThumbnail(resource['url']) + '">'
+                                +'<div class="w3-display-topleft w3-container"><i class="fa fa-video-camera"'+'" resourceUrl="' + resource['url'] + '"></i></div>'
+                                +'<div class="w3-display-bottomleft w3-container">'+ resource['title'] + '</div>'
                                 +'</div>';
                             $("#rl"+sub+"x"+chk).slick('slickAdd',listElement);
                         });
@@ -138,7 +154,7 @@
                            <i class="fa fa-spinner fa-spin"></i>
                        </div>
                         <div class="w3-green w3-container">
-                            <div id="rl{{subject.index}}x{{item.index}}" class="rl w3-red ask-slider-container"></div>
+                            <div id="rl{{subject.index}}x{{item.index}}" class="rl ask-slider-container"></div>
                         </div>
 
                     </div>
@@ -156,3 +172,4 @@
 
 <p> </p>
 {% endblock %}
+
