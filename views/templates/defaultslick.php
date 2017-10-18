@@ -19,7 +19,7 @@
 	<body class="w3-container" >
 		<header class="w3-row w3-orange">
 		
-			<div class="w3-container w3-orange w3-col l8">
+			<div class="w3-container w3-col l8">
 			{% if auth %}
 				<h2>
 				<div class="w3-dropdown-hover w3-orange"> 
@@ -60,10 +60,8 @@
 			<SPACER TYPE=HORIZONTAL SIZE=50>AskEddy.co.uk</h2>
 			</div>
 
-			<p></p>
 		</header>
 		{% include 'templates/partials/messages.php' %}
-        <p></p>
 		
 		
 		{% block content %} {% endblock %}

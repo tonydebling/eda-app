@@ -108,10 +108,10 @@
                     var url = 'getdata/resources?sstr="'+searchStringEncoded+'"';
                     $.getJSON(url, function(data){
                         data.forEach(function(resource){
-                            listElement = '<div class="w3-display-container" id="'+resource['id'] + '" resourceUrl="' + resource['url'] +'">'
+                            listElement = '<div class="w3-display-container" id="'+resource['id'] + '" href="' + resource['url'] +'">'
                                 +'<img class="w3-hover-opacity ask-slider-image"'+'" src="' + youTubeThumbnail(resource['url']) + '">'
-                                +'<div class="w3-display-topleft w3-container"><i class="fa fa-video-camera"'+'" resourceUrl="' + resource['url'] + '"></i></div>'
-                                +'<div class="w3-display-bottomleft w3-container">'+ resource['title'] + '</div>'
+                                +'<div class="w3-display-topleft w3-container"><i class="fa fa-video-camera w3-text-red"'+'" resourceUrl="' + resource['url'] + '"></i></div>'
+                                +'<div class="w3-display-bottomleft w3-small w3-text-white">'+ resource['title'] + '</div>'
                                 +'</div>';
                             $("#rl"+sub+"x"+chk).slick('slickAdd',listElement);
                         });
@@ -133,11 +133,14 @@
 	
 	</script>
 
+<div class="w3-text-red w3-center"><h2><i class="fa fa-fire w3-text-red"></i> Your hot lists</h2>
+</div>
+
 <div id="display" class="w3-row">
     <div class="w3-hoverable w3-container">
-        <h3>Your hot lists</h3>
+
         {% for subject in subjectlist %}
-           <div class="w3-orange w3-hover-green w3-container" id="n{{subject.index}}" index="{{subject.index}}">
+           <div class="w3-hover-green w3-orange" id="n{{subject.index}}" index="{{subject.index}}">
                {% if subject.plc_id != null  %}
                <i class="fa fa-toggle-down" id="t{{subject.index}}" stogg=true index="{{subject.index}}"></i>
                {% else %}
@@ -145,7 +148,7 @@
                {% endif %}
                {{ subject.name }}
            </div>
-            <div id="b{{subject.index}}" style="display: none" class="w3-container w3-green" >
+            <div id="b{{subject.index}}" style="display: none"  >
                    {% for item in subject.hotlist %}
                     <div>
                        <i class="fa fa-toggle-down check-item" id="t{{subject.index}}x{{item.index}}" ctogg=true sub="{{subject.index}}"  chk="{{item.index}}"></i>
@@ -153,7 +156,7 @@
                        <div id="sp{{subject.index}}x{{item.index}}" style="display: none">
                            <i class="fa fa-spinner fa-spin"></i>
                        </div>
-                        <div class="w3-green w3-container">
+                        <div class="w3-container w3-white">
                             <div id="rl{{subject.index}}x{{item.index}}" class="rl ask-slider-container"></div>
                         </div>
 

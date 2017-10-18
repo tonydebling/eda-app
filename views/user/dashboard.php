@@ -20,7 +20,7 @@
 				<td>{{ line.subject }}</td>
 				<td class="w3-center">
 				{% if (line.plc_id != null) %}
-					<a href="{{ urlFor('plc') }}?id={{ line.plc_id}}"
+					<a href="{{ urlFor('hotlists') }}?id={{ user.student_id}}"
 					class="fa fa-fire" style="color:red" ></a>
 				{% endif %}
                 <td class="w3-center">
@@ -34,7 +34,7 @@
                        class="fa fa-line-chart" style="color:blue" ></a>
                 </td>
                 <td class="w3-center">
-                    <a href="{{ urlFor('plc') }}?id={{ line.plc_id}}"
+                    <a href=""
                        class="fa fa-bullseye" style="color:black" ></a>
                 </td>
 			</tr>

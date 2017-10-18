@@ -33,7 +33,7 @@ $app->get('/home', function() use($app) {
 			$k += 1;
 		}
 		
-		$app->render('/user/stuhome.php', [
+		$app->render('/user/dashboard.php', [
 			'user' => $user,
 			'dash' => $dash,
 		]);
