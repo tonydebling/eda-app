@@ -30,7 +30,7 @@
                     {% endif %}
 				</td>
 				<td class="w3-center">
-                    <a href="{{ urlFor('plc') }}?id={{ line.plc_id}}"
+                    <a href="{{ urlFor('testresults') }}?id={{ user.student_id}}"
                        class="fa fa-line-chart" style="color:blue" ></a>
                 </td>
                 <td class="w3-center">
